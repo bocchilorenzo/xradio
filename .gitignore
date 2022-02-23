@@ -1,0 +1,20 @@
+# Neutralinojs binaries and builds
+/bin
+/dist
+/.tmp
+
+#Vue builds
+/xradio-vue/dist
+/xradio-vue/node_modules
+/xradio-vue/package-lock.json
+
+# Neutralinojs related files
+.storage
+*.log
+
+# Other
+tmpState.txt
+command.txt
+/extensions/dnslookup/node_modules
+/extensions/dnslookup/package-lock.json
+TODO.md
