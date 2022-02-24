@@ -38,6 +38,7 @@
       class="w-3/4 lg:w-3/5 px-4 mx-auto min-h-full py-12 pl-14"
       :baseUrl="baseUrl"
       :favorites="favorites"
+      :config="config"
       @play="play"
       @removeFav="manageFavorites"
     />
@@ -68,6 +69,7 @@ export default {
       favorites: {},
       snackMsg: "",
       showSnack: false,
+      config: {},
     };
   },
   created() {
@@ -131,6 +133,7 @@ export default {
       axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.click + station.stationuuid,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           console.log(res.data);
@@ -146,7 +149,7 @@ export default {
         html5: true,
         volume: this.$store.state.volume / 100,
       });
-      document.title = station.name
+      document.title = station.name;
       this.sound.play();
       this.sound.once("load", () => {
         this.loading = false;
@@ -164,7 +167,7 @@ export default {
     stop() {
       this.sound.stop();
       this.sound.unload();
-      document.title = "xradio"
+      document.title = "xradio";
       this.isPlaying = false;
       this.loading = false;
       this.error = false;
@@ -184,9 +187,11 @@ export default {
       );
     },
     async initRequests() {
+      this.config = await window.Neutralino.app.getConfig();
       await axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.countries,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           this.$store.dispatch("add", ["countries", res.data]);
@@ -197,6 +202,7 @@ export default {
       await axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.countryCodes,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           this.$store.dispatch("add", ["countryCodes", res.data]);

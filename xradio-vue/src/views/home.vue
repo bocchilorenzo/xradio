@@ -49,6 +49,7 @@ export default {
   name: "home",
   props: {
     baseUrl: String,
+    config: Object,
   },
   created() {
     if (!this.$store.state.initialLoad) {
@@ -64,6 +65,7 @@ export default {
       await axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.recentStations,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           this.$store.dispatch("add", ["recentStations", res.data]);
@@ -75,6 +77,7 @@ export default {
       await axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.mostPopular,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           this.$store.dispatch("add", ["mostPopular", res.data]);
@@ -86,6 +89,7 @@ export default {
       await axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.higherRated,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           this.$store.dispatch("add", ["higherRated", res.data]);

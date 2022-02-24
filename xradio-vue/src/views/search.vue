@@ -154,6 +154,7 @@ export default {
   name: "search",
   props: {
     baseUrl: String,
+    config: Object,
   },
   created() {
     if (this.$route.params.mode == "text") {
@@ -206,6 +207,7 @@ export default {
       await axios({
         mode: "get",
         url: url,
+        headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
           if (res.data.length == 0) {
