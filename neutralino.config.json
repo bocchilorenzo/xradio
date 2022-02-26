@@ -1,6 +1,6 @@
 {
   "applicationId": "js.neutralino.xradio",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "defaultMode": "window",
   "documentRoot": "/xradio-vue/dist/",
   "port": 6498,

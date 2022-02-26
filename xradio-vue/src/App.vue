@@ -14,7 +14,7 @@
     "
     @contextmenu.prevent="&quot;&quot;;"
   >
-    <navbar @switchTheme="switchTheme" />
+    <navbar-2 @switchTheme="switchTheme" />
     <transition name="slideLeft">
       <snackbar v-if="showSnack" :msg="snackMsg" />
     </transition>
@@ -47,15 +47,17 @@
 
 <script>
 import axios from "axios";
-import Navbar from "./components/navbar.vue";
+//import Navbar from "./components/navbar.vue";
 import { Howl, Howler } from "howler/dist/howler.core.min";
 import Player from "./components/player.vue";
 import Snackbar from "./components/snackbar.vue";
+import Navbar2 from "./components/navbar2.vue";
 export default {
   components: {
-    Navbar,
+    //Navbar,
     Player,
     Snackbar,
+    Navbar2,
   },
   data() {
     return {
@@ -73,6 +75,29 @@ export default {
     };
   },
   created() {
+    //prevent zooming
+    window.addEventListener(
+      "keydown",
+      function (e) {
+        if (
+          (e.ctrlKey || e.metaKey) &&
+          (e.which === 61 ||
+            e.which === 107 ||
+            e.which === 173 ||
+            e.which === 109 ||
+            e.which === 187 ||
+            e.which === 189)
+        ) {
+          e.preventDefault();
+        }
+      },
+      false
+    );
+    const handleWheel = function (e) {
+      if (e.ctrlKey || e.metaKey) e.preventDefault();
+    };
+    window.addEventListener("wheel", handleWheel, { passive: false });
+
     let theme = localStorage.getItem("theme");
     if ((theme && theme == "dark") || !theme) {
       document.querySelector("html").classList.add("dark");
