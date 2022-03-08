@@ -102,12 +102,17 @@
     <div
       v-if="!loading"
       class="
-        my-6
+        my-4
+        py-2
+        bg-white
+        dark:bg-nord-gray1
         dark:text-nord-white3
         flex
         items-center
         content-center
         gap-x-2
+        sticky
+        top-0
       "
     >
       <button

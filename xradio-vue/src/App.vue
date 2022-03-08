@@ -283,6 +283,26 @@ export default {
   background-color: #120022;
 }
 */
+:root {
+  --scrollbarBG: #2b251d;
+  --thumbBG: #4c566a;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG) !important;
+  scrollbar-width: thin !important;
+}
+body::-webkit-scrollbar {
+  width: 6px;
+}
+body {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+body::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+  border: 1px solid var(--scrollbarBG);
+}
 * {
   font-family: "Nanum Gothic", sans-serif;
 }
