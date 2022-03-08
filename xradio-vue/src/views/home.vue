@@ -28,10 +28,10 @@
     </div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Best rated stations
+        Most rated stations
       </h1>
       <station-list
-        v-for="station in $store.state.higherRated"
+        v-for="station in $store.state.mostRated"
         :key="station.stationuuid"
         @click.native="play(station)"
         :station="station"
@@ -88,11 +88,11 @@ export default {
 
       await axios({
         mode: "get",
-        url: this.baseUrl + this.$store.state.urls.higherRated,
+        url: this.baseUrl + this.$store.state.urls.mostRated,
         headers: { "User-Agent": "XRadio/" + this.config.version },
       })
         .then((res) => {
-          this.$store.dispatch("add", ["higherRated", res.data]);
+          this.$store.dispatch("add", ["mostRated", res.data]);
         })
         .catch((err) => {
           console.err(err);

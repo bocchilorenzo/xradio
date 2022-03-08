@@ -3,24 +3,51 @@
     class="
       fixed
       w-12
-      p-2
+      py-2
       h-full
       bg-nord-white1
       text-black
       dark:text-nord-white3 dark:bg-nord-gray3
     "
   >
-    <div class="z-20 absolute">
-      <button @click="handle('home')" class="w-8 h-8 p-1 mt-2">
+    <div class="z-20 absolute w-full">
+      <button
+        @click="handle('home')"
+        class="
+          w-full
+          h-8
+          py-1
+          px-3
+          mt-2
+          hover:bg-white
+          dark:hover:bg-nord-gray1
+          transition-colors
+          duration-100
+          ease-out
+        "
+      >
         <span class="sr-only">Home</span>
         <svg class="fill-current" viewBox="0 0 24 24">
           <path
-            fill="currentColor"
             d="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22L12 3Z"
           />
         </svg>
       </button>
-      <button @click="handle('favorites')" class="w-8 h-8 p-1 mt-2">
+      <button
+        @click="handle('favorites')"
+        class="
+          w-full
+          h-8
+          py-1
+          px-3
+          mt-2
+          hover:bg-white
+          dark:hover:bg-nord-gray1
+          transition-colors
+          duration-100
+          ease-out
+        "
+      >
         <span class="sr-only">Favorites</span>
         <svg class="fill-current" viewBox="0 0 24 24">
           <path
@@ -28,7 +55,21 @@
           />
         </svg>
       </button>
-      <button @click="handle('searchHub')" class="w-8 h-8 p-1 mt-2">
+      <button
+        @click="handle('searchHub')"
+        class="
+          w-full
+          h-8
+          py-1
+          px-3
+          mt-2
+          hover:bg-white
+          dark:hover:bg-nord-gray1
+          transition-colors
+          duration-100
+          ease-out
+        "
+      >
         <span class="sr-only">Search</span>
         <svg class="fill-current" viewBox="0 0 24 24">
           <path
@@ -36,21 +77,25 @@
           />
         </svg>
       </button>
-      <button @click="handle('about')" class="w-8 h-8 p-1 mt-2">
+      <button
+        @click="handle('about')"
+        class="
+          w-full
+          h-8
+          py-1
+          px-3
+          mt-2
+          hover:bg-white
+          dark:hover:bg-nord-gray1
+          transition-colors
+          duration-100
+          ease-out
+        "
+      >
         <span class="sr-only">About</span>
         <svg class="fill-current" viewBox="0 0 24 24">
           <path
-            fill="currentColor"
             d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"
-          />
-        </svg>
-      </button>
-      <button class="mx-auto w-8 h-8 p-1 mt-2" @click="$emit('switchTheme')">
-        <span class="sr-only">Theme switcher</span>
-        <svg class="fill-current" viewBox="0 0 24 24">
-          <path
-            fill="currentColor"
-            d="M7.5,2C5.71,3.15 4.5,5.18 4.5,7.5C4.5,9.82 5.71,11.85 7.53,13C4.46,13 2,10.54 2,7.5A5.5,5.5 0 0,1 7.5,2M19.07,3.5L20.5,4.93L4.93,20.5L3.5,19.07L19.07,3.5M12.89,5.93L11.41,5L9.97,6L10.39,4.3L9,3.24L10.75,3.12L11.33,1.47L12,3.1L13.73,3.13L12.38,4.26L12.89,5.93M9.59,9.54L8.43,8.81L7.31,9.59L7.65,8.27L6.56,7.44L7.92,7.35L8.37,6.06L8.88,7.33L10.24,7.36L9.19,8.23L9.59,9.54M19,13.5A5.5,5.5 0 0,1 13.5,19C12.28,19 11.15,18.6 10.24,17.93L17.93,10.24C18.6,11.15 19,12.28 19,13.5M14.6,20.08L17.37,18.93L17.13,22.28L14.6,20.08M18.93,17.38L20.08,14.61L22.28,17.15L18.93,17.38M20.08,12.42L18.94,9.64L22.28,9.88L20.08,12.42M9.63,18.93L12.4,20.08L9.87,22.27L9.63,18.93Z"
           />
         </svg>
       </button>

@@ -131,28 +131,29 @@
         />
       </svg>
       <div class="flex flex-col w-full text-center">
-        <div class="flex items-center content-center justify-center gap-x-2">
+        <div class="flex items-center content-center justify-center">
           <p class="marquee font-bold">
             <span>
               {{ currentStation.name }}
             </span>
           </p>
-          <small
-            class="
-              ml-auto
-              flex flex-col
-              content-center
-              items-center
-              justify-center
-              text-center
-            "
-          >
-            <i> {{ currentStation.codec }}</i>
-            <i> {{ currentStation.bitrate }}k </i>
-          </small>
         </div>
         <p class="truncate text-sm" id="tags">{{ currentStation.tags }}</p>
       </div>
+      <small
+        class="
+          flex flex-col
+          content-center
+          items-center
+          justify-center
+          text-center
+        "
+      >
+        <i> {{ currentStation.codec }}</i>
+        <i v-if="currentStation.bitrate != ''">
+          {{ currentStation.bitrate }}k
+        </i>
+      </small>
       <button @click="manageFavorites" title="Save to favorites" class="p-1">
         <svg
           v-if="!isFav"
@@ -289,7 +290,7 @@ export default {
 }
 
 .marquee {
-  width: 80%;
+  width: 100%;
   overflow: hidden;
   box-sizing: border-box;
 }

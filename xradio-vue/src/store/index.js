@@ -10,14 +10,14 @@ export default new Vuex.Store({
     countryCodes: [],
     recentStations: [],
     mostPopular: [],
-    higherRated: [],
+    mostRated: [],
     allStations: [],
     urls: {
       countries: "/json/countries",
       countryCodes: "/json/countrycodes",
       recentStations: "/json/stations/lastchange/10",
       mostPopular: "/json/stations/topclick/10",
-      higherRated: "/json/stations/topvote/10",
+      mostRated: "/json/stations/topvote/10",
       allStations: "/json/stations",
       search: {
         id: "/json/stations/byuuid/",

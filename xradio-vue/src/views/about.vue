@@ -2,12 +2,12 @@
   <div class="mx-auto w-auto">
     <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">About</h1>
     <p>
-      The source code can be found at
+      The source code can be found on
       <span
-        @click="link('https://github.com')"
+        @click="link('https://github.com/bocchilorenzo/xradio')"
         class="text-nord-frost2 font-bold cursor-pointer"
       >
-        github.com
+        Github
       </span>
       . Used technologies:
     </p>
