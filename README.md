@@ -5,8 +5,6 @@ A cross-platform radio desktop app for Windows 10+, Linux and macOS.
 - NodeJS (any reasonably recent version should do). It's required for the extension to work (the dns lookup required by the radio api)
 
 ## To-do
-- update check on startup
-
 - add neutralino storage instead of browser localstorage (https://stackoverflow.com/questions/65095952/neutralinojs-storage)
 
 - use the state instead of the localstorage for the favorites, and save them to localstorage only when the tab is closed (to have less computations and better performance with a long favorites list), like following:
