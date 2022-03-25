@@ -45,6 +45,15 @@
     <transition name="slideLeft">
       <snackbar v-if="showSnack" :msg="snackMsg" />
     </transition>
+    <transition name="slideLeft">
+      <update-banner
+        v-if="showBanner"
+        @update="
+          (showBanner = false), link('https://github.com/bocchilorenzo/xradio/releases/latest')
+        "
+        @close="showBanner = false"
+      />
+    </transition>
     <transition name="slide">
       <player
         v-if="currentStation.stationuuid"
@@ -68,6 +77,7 @@
       :config="config"
       @play="play"
       @removeFav="manageFavorites"
+      @link="link"
     />
   </div>
 </template>
@@ -79,12 +89,14 @@ import { Howl, Howler } from "howler/dist/howler.core.min";
 import Player from "./components/player.vue";
 import Snackbar from "./components/snackbar.vue";
 import Navbar2 from "./components/navbar2.vue";
+import UpdateBanner from "./components/updateBanner.vue";
 export default {
   components: {
     //Navbar,
     Player,
     Snackbar,
     Navbar2,
+    UpdateBanner,
   },
   data() {
     return {
@@ -97,7 +109,9 @@ export default {
       currentStation: {},
       favorites: {},
       snackMsg: "",
+      bannerMsg: "",
       showSnack: false,
+      showBanner: false,
       config: {},
     };
   },
@@ -145,14 +159,35 @@ export default {
       this.baseUrl = event.detail;
       this.initRequests();
     });
+    this.checkUpdate();
   },
   methods: {
-    playbackError() {
-      this.snackMsg = "Error: can't play station";
+    async link(url) {
+      await window.Neutralino.os.open(url);
+    },
+    async checkUpdate() {
+      axios
+        .get("https://api.github.com/repos/bocchilorenzo/xradio/releases/latest")
+        .then((res) => {
+          if (res.data.name != this.config.version) {
+            this.toggleBanner("Update available. Click to download");
+          }
+        })
+        .catch((err) => {
+          this.toggleSnack("Update check failed");
+          console.error(err);
+        });
+    },
+    toggleSnack(msg) {
+      this.snackMsg = msg;
       this.showSnack = true;
       setTimeout(() => {
         this.showSnack = false;
       }, 4000);
+    },
+    toggleBanner(msg) {
+      this.bannerMsg = msg;
+      this.showBanner = true;
     },
     volume() {
       Howler.volume(this.$store.state.volume / 100);
@@ -207,7 +242,7 @@ export default {
         this.loading = false;
       });
       this.sound.once("loaderror", () => {
-        this.playbackError();
+        this.toggleSnack("Error: can't play station");
         this.loading = false;
         this.error = true;
       });
@@ -321,10 +356,22 @@ h1 {
   opacity: 0.5;
   transform: translateY(100%);
 }
+.slideDown-enter {
+  opacity: 0.5;
+  transform: translateY(-100%);
+}
+.slideDown-enter-active,
+.slideDown-leave-active {
+  transition: 0.3s ease-out;
+}
+.slideDown-leave-to {
+  opacity: 0.5;
+  transform: translateY(-100%);
+}
 
 .slideLeft-enter {
   opacity: 0.5;
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 .slideLeft-enter-active,
 .slideLeft-leave-active {
@@ -332,6 +379,6 @@ h1 {
 }
 .slideLeft-leave-to {
   opacity: 0.5;
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 </style>

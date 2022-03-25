@@ -8,6 +8,7 @@
       bg-nord-white1
       text-black
       dark:text-nord-white3 dark:bg-nord-gray3
+      z-20
     "
   >
     <div class="z-20 absolute w-full">
