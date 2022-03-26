@@ -49,7 +49,8 @@
       <update-banner
         v-if="showBanner"
         @update="
-          (showBanner = false), link('https://github.com/bocchilorenzo/xradio/releases/latest')
+          (showBanner = false),
+            link('https://github.com/bocchilorenzo/xradio/releases/latest')
         "
         @close="showBanner = false"
       />
@@ -158,8 +159,8 @@ export default {
     Neutralino.events.on("baseHost", (event) => {
       this.baseUrl = event.detail;
       this.initRequests();
+      this.checkUpdate();
     });
-    this.checkUpdate();
   },
   methods: {
     async link(url) {
@@ -167,7 +168,9 @@ export default {
     },
     async checkUpdate() {
       axios
-        .get("https://api.github.com/repos/bocchilorenzo/xradio/releases/latest")
+        .get(
+          "https://api.github.com/repos/bocchilorenzo/xradio/releases/latest"
+        )
         .then((res) => {
           if (res.data.name != this.config.version) {
             this.toggleBanner("Update available. Click to download");
@@ -325,7 +328,7 @@ export default {
   scrollbar-width: thin !important;
 }
 body::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 body {
   scrollbar-width: thin !important;
