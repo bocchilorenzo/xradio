@@ -2,7 +2,8 @@
 A cross-platform radio desktop app for Windows 10+, Linux and macOS.
 
 ## Requirements
-- NodeJS (any reasonably recent version should do). It's required for the extension to work (the dns lookup required by the radio api)
+- NodeJS (any reasonably recent version should do). It's required for the extension to work (the dns lookup required by the radio API)
+- on Linux, appindicator is needed to make Neutralino work correctly
 
 ## To-do
 - add neutralino storage instead of browser localstorage (https://stackoverflow.com/questions/65095952/neutralinojs-storage)
@@ -16,9 +17,19 @@ await Neutralino.events.on(`windowClose`, () => {
 ```
 
 ## Building
-- first build the frontend in the "XRadio-vue" folder with the command "npm run build"
-- install dependencies in the "extensions" folder with "npm i"
-- build from the root directory with "neu build" (or "neu build --release" if you also want to generate the zip file)
+
+### Requirements
+- NodeJS
+- Neutralino CLI
+
+### Steps
+- clone this repository
+- run the command "neu update" in the root folder to download neutralino's binaries
+- move in the "xradio-vue" folder and install dependencies with "npm i"
+- build the frontend with "npm run build"
+- move back to the root folder and then to the extensions -> dnslookup folder
+- install dependencies with "npm i" and then move back to the root
+- build the app with "neu build" (or "neu build --release" if you also want to generate the zip file)
 
 ## Notes
 - It can also work on Windows 7, 8 and 8.1 if you install WebView2 from https://developer.microsoft.com/it-it/microsoft-edge/webview2/ and download the Evergreen Standalone Installer
