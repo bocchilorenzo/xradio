@@ -1,6 +1,6 @@
 {
   "applicationId": "js.neutralino.xradio",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "defaultMode": "window",
   "documentRoot": "/xradio-vue/dist/",
   "port": 6498,
@@ -24,7 +24,11 @@
       "minWidth": 400,
       "minHeight": 200,
       "resizable": false,
-      "icon": "/www/icon.png"
+      "icon": "/resources/icons/icon.png",
+      "borderless": false,
+      "maximize": false,
+      "hidden": false,
+      "exitProcessOnClose": true
     }
   },
   "cli": {
@@ -32,8 +36,8 @@
     "resourcesPath": "/xradio-vue/dist/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/xradio-vue/public/neutralino.js",
-    "binaryVersion": "4.2.0",
-    "clientVersion": "3.1.0",
+    "binaryVersion": "4.6.0",
+    "clientVersion": "3.5.0",
     "frontendLibrary": {
       "patchFile": "/xradio-vue/public/index.html",
       "devUrl": "http://localhost:8080"

@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     async link(url) {
-      await window.Neutralino.os.open(url);
+      await Neutralino.os.open(url);
     },
     async checkUpdate() {
       axios
@@ -277,7 +277,7 @@ export default {
       );
     },
     async initRequests() {
-      this.config = await window.Neutralino.app.getConfig();
+      this.config = await Neutralino.app.getConfig();
       await axios({
         mode: "get",
         url: this.baseUrl + this.$store.state.urls.countries,
