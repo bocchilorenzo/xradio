@@ -2,8 +2,8 @@
 A cross-platform radio desktop app for Windows 10+, Linux and macOS.
 
 ## Requirements
-- NodeJS (any reasonably recent version should do). It's required for the extension to work (the dns lookup required by the radio API)
-- on Linux, appindicator is needed to make Neutralino work correctly
+- NodeJS v14+. It's required for the extension to work (the dns lookup required by the radio API)
+- on Linux, either libayatana-appindicator or libappindicator3-1 might be needed to make Neutralino work correctly (probably not needed, need more testing to verify)
 
 ## To-do
 - add neutralino storage instead of browser localstorage (https://stackoverflow.com/questions/65095952/neutralinojs-storage)

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-auto">
+  <div>
     <div class="relative w-full group">
       <svg
         class="
@@ -139,7 +139,7 @@
       <station-list
         v-for="station in resultsShow"
         :key="station.stationuuid"
-        @click.native="play(station)"
+        @click="play(station)"
         :station="station"
       />
     </div>
@@ -261,7 +261,7 @@ export default {
       }
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("scroll", () => {
       this.bottom = this.bottomVisible();
     });

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-auto">
+  <div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
         Most recent stations
@@ -9,7 +9,7 @@
           <station-card
             v-for="station in $store.state.recentStations"
             :key="station.stationuuid"
-            @click.native="play(station)"
+            @click="play(station)"
             :station="station"
           />
         </div>
@@ -22,7 +22,7 @@
       <station-list
         v-for="station in $store.state.mostPopular"
         :key="station.stationuuid"
-        @click.native="play(station)"
+        @click="play(station)"
         :station="station"
       />
     </div>
@@ -33,7 +33,7 @@
       <station-list
         v-for="station in $store.state.mostRated"
         :key="station.stationuuid"
-        @click.native="play(station)"
+        @click="play(station)"
         :station="station"
       />
     </div>

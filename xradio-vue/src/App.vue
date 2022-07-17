@@ -1,6 +1,5 @@
 <template>
-  <div
-    id="app"
+  <main
     class="
       min-h-screen
       bg-white
@@ -12,9 +11,9 @@
       ease-out
       select-none
     "
-    @contextmenu.prevent="&quot;&quot;;"
+    @contextmenu.prevent="null"
   >
-    <navbar-2 @switchTheme="switchTheme" />
+    <navbar-2 />
     <button
       @click="switchTheme"
       class="
@@ -27,6 +26,8 @@
         border-nord-gray1
         mx-2
         mt-2
+        sticky
+        top-2
         float-right
       "
     >
@@ -72,7 +73,7 @@
     </transition>
     <router-view
       v-if="baseUrl != ''"
-      class="w-3/4 lg:w-3/5 px-4 mx-auto min-h-full py-12 pl-14"
+      class="w-3/4 px-4 mx-auto min-h-full py-12 pl-14"
       :baseUrl="baseUrl"
       :favorites="favorites"
       :config="config"
@@ -80,7 +81,7 @@
       @removeFav="manageFavorites"
       @link="link"
     />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -307,7 +308,6 @@ export default {
       let data = {
         getUrls: true,
       };
-
       await Neutralino.extensions.dispatch(extension, event, data);
     },
   },

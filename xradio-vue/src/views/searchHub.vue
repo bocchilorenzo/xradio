@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-auto">
+  <div>
     <div class="relative w-full group">
       <svg
         class="
@@ -143,7 +143,7 @@ export default {
           params: {
             mode: mode,
             q: this.searchText
-              .replace(/[^a-z0-9áéíóúñü \.,_-]/gim, "")
+              .replace(/[^a-z0-9áéíóúñü .,_-]/gim, "")
               .trim(),
           },
         });
@@ -152,7 +152,7 @@ export default {
           name: "search",
           params: {
             mode: mode,
-            q: q.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, "").trim(),
+            q: q.replace(/[^a-z0-9áéíóúñü .,_-]/gim, "").trim(),
           },
         });
       }
@@ -181,7 +181,7 @@ export default {
       }
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("scroll", () => {
       this.bottom = this.bottomVisible();
     });

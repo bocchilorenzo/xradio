@@ -1,7 +1,8 @@
 <template>
   <div
     class="
-      absolute
+      sticky
+      top-0
       w-max
       pl-14
       p-2
@@ -10,6 +11,7 @@
       content-center
       items-center
       gap-x-2
+      z-10
     "
   >
     <h1 class="text-large cursor-pointer inline" @click="$emit('update')">

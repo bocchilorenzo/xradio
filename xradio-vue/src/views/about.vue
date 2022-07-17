@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-auto">
+  <div>
     <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">About</h1>
     <img src="https://www.gnu.org/graphics/agplv3-with-text-162x68.png" alt="AGPLv3"/>
     <p>

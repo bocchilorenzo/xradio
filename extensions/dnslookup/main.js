@@ -59,9 +59,7 @@ client.onmessage = async function (e) {
         // to send an event here
         switch (message.event) {
             case 'dnsLookup':
-                await get_radiobrowser_base_urls().then(hosts => {
-                    return get_radiobrowser_base_url_random();
-                }).then(random_host => {
+                await get_radiobrowser_base_url_random().then(random_host => {
                     // Use Neutralinojs server's messaging protocol to trigger native API functions
                     // Use app.broadcast method to send an event to all app instances
                     client.send(JSON.stringify({

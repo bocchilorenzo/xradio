@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-auto">
+  <div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
         Favorite stations
@@ -10,7 +10,7 @@
           v-for="station in favorites"
           :key="station.stationuuid"
         >
-          <station-list @click.native="play(station)" :station="station" />
+          <station-list @click="play(station)" :station="station" />
           <button
             @click="$emit('removeFav', station.stationuuid)"
             class="
