@@ -18,13 +18,14 @@
   >
     <img
       v-if="station.favicon != ''"
-      class="h-20 rounded object-contain"
+      class="h-16 rounded object-contain
+      dark:bg-white"
       :src="station.favicon"
       alt="Logo"
     />
     <svg
       v-else
-      class="fill-current h-20 rounded dark:text-nord-white3"
+      class="fill-current h-16 rounded dark:text-nord-white3"
       viewBox="0 0 24 24"
       alt="Logo"
     >
@@ -38,7 +39,7 @@
     <div>
       <span v-if="station.countrycode != ''">
         <img
-          class="w-6 inline"
+          class="w-6 inline mr-1"
           :src="
             'https://flagcdn.com/w20/' +
             station.countrycode.toLowerCase() +

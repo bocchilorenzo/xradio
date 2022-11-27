@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import home from '../views/home.vue'
+import home from '../views/Home.vue'
 
 const routes = [
   {
@@ -11,28 +11,28 @@ const routes = [
     path: '/about',
     name: 'about',
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/about.vue')
+      return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
   },
   {
     path: '/favorites',
     name: 'favorites',
     component: function () {
-      return import(/* webpackChunkName: "favorites" */ '../views/favorites.vue')
+      return import(/* webpackChunkName: "favorites" */ '../views/Favorites.vue')
     }
   },
   {
     path: '/searchHub',
     name: 'searchHub',
     component: function () {
-      return import(/* webpackChunkName: "search" */ '../views/searchHub.vue')
+      return import(/* webpackChunkName: "search" */ '../views/SearchHub.vue')
     }
   },
   {
     path: '/search/:mode/:q',
     name: 'search',
     component: function () {
-      return import(/* webpackChunkName: "search" */ '../views/search.vue')
+      return import(/* webpackChunkName: "search" */ '../views/Search.vue')
     }
   }
 ]

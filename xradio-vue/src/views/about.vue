@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">About</h1>
-    <img src="https://www.gnu.org/graphics/agplv3-with-text-162x68.png" alt="AGPLv3"/>
+    <p>Current instance: {{$store.state.baseUrl}}</p>
+    <h1 class="text-xl mt-2 dark:text-nord-white3 font-bold">About</h1>
+    <img src="https://www.gnu.org/graphics/agplv3-with-text-162x68.png" alt="AGPLv3" class="dark:bg-nord-white1 rounded p-2 my-1"/>
     <p>
       The source code can be found on
       <span

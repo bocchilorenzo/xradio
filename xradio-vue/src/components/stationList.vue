@@ -23,7 +23,7 @@
   >
     <img
       v-if="station.favicon != ''"
-      class="h-10 w-10 rounded object-contain"
+      class="h-10 w-10 rounded object-contain dark:bg-white"
       :src="station.favicon"
       alt="Logo"
     />
@@ -42,19 +42,17 @@
         dark:text-nord-white3
         w-full
         font-bold
-        content-center
-        items-center
         truncate
         col-span-4
         sm:col-span-7
       "
     >
-      <h2>
+      <h2 class="truncate" :title="station.name">
         {{ station.name }}
       </h2>
       <img
         v-if="station.countrycode != ''"
-        class="w-6 inline"
+        class="w-6 inline mr-1"
         :class="station.homepage != '' ? '' : 'col-span-2'"
         :src="
           'https://flagcdn.com/w20/' +

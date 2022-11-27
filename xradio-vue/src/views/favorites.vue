@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import StationList from "../components/stationList.vue";
+import StationList from "../components/StationList.vue";
 export default {
   components: { StationList },
   name: "favorites",

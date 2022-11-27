@@ -4,6 +4,7 @@ export default createStore({
   state: {
     baseUrl: "",
     countries: [],
+    selectedCountries: new Set(),
     countryCodes: [],
     recentStations: [],
     mostPopular: [],
@@ -36,6 +37,9 @@ export default createStore({
     setBase(store, url) {
       store.commit("setBase", url)
     },
+    setSelectedCountries(store, countries) {
+      store.commit("setSelectedCountries", countries)
+    },
     add(store, arr) {
       store.commit("add", arr)
     },
@@ -53,6 +57,9 @@ export default createStore({
   mutations: {
     setBase(state, url) {
       state.baseUrl = url
+    },
+    setSelectedCountries(state, countries) {
+      state.selectedCountries = countries
     },
     add(state, arr) {
       state[arr[0]] = arr[1]

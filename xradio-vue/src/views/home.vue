@@ -42,8 +42,8 @@
 
 <script>
 import axios from "axios";
-import stationCard from "../components/stationCard.vue";
-import StationList from "../components/stationList.vue";
+import stationCard from "../components/StationCard.vue";
+import StationList from "../components/StationList.vue";
 export default {
   components: { stationCard, StationList },
   name: "home",

@@ -2,10 +2,11 @@
   <main
     class="
       min-h-screen
-      bg-white
       relative
       text-nord-gray1
-      dark:text-nord-white3 dark:bg-nord-gray1
+      dark:text-nord-white3
+      dark:bg-nord-gray1
+      bg-white
       transition-colors
       duration-300
       ease-out
@@ -13,7 +14,7 @@
     "
     @contextmenu.prevent="null"
   >
-    <navbar-2 />
+    <nav-bar-2 />
     <button
       @click="switchTheme"
       class="
@@ -44,7 +45,7 @@
       </svg>
     </button>
     <transition name="slideLeft">
-      <snackbar v-if="showSnack" :msg="snackMsg" />
+      <snack-bar v-if="showSnack" :msg="snackMsg" />
     </transition>
     <transition name="slideLeft">
       <update-banner
@@ -86,18 +87,18 @@
 
 <script>
 import axios from "axios";
-//import Navbar from "./components/navbar.vue";
+//import Navbar from "./components/NavBar.vue";
 import { Howl, Howler } from "howler/dist/howler.core.min";
-import Player from "./components/player.vue";
-import Snackbar from "./components/snackbar.vue";
-import Navbar2 from "./components/navbar2.vue";
-import UpdateBanner from "./components/updateBanner.vue";
+import Player from "./components/Player.vue";
+import SnackBar from "./components/SnackBar.vue";
+import NavBar2 from "./components/NavBar2.vue";
+import UpdateBanner from "./components/UpdateBanner.vue";
 export default {
   components: {
     //Navbar,
     Player,
-    Snackbar,
-    Navbar2,
+    SnackBar,
+    NavBar2,
     UpdateBanner,
   },
   data() {
@@ -156,9 +157,13 @@ export default {
     if (localStorage.getItem("volume")) {
       this.$store.dispatch("volume", parseInt(localStorage.getItem("volume")));
     }
+    if (localStorage.getItem("selectedCountries")) {
+      this.$store.dispatch("setSelectedCountries", JSON.parse(localStorage.getItem("selectedCountries")));
+		}
     this.dns();
     Neutralino.events.on("baseHost", (event) => {
       this.baseUrl = event.detail;
+      this.$store.dispatch("setBase", this.baseUrl);
       this.initRequests();
       this.checkUpdate();
     });
@@ -226,9 +231,9 @@ export default {
         url: this.baseUrl + this.$store.state.urls.click + station.stationuuid,
         headers: { "User-Agent": "XRadio/" + this.config.version },
       })
-        .then((res) => {
+        /* .then((res) => {
           console.log(res.data);
-        })
+        }) */
         .catch((err) => {
           console.error(err);
         });
