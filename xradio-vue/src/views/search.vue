@@ -73,7 +73,7 @@
 		</div>
 		<div
 			v-if="!loading"
-			class="my-4 py-2 dark:text-nord-white3 flex items-center content-center justify-between gap-x-2 sticky top-0"
+			class="my-4 py-2 bg-white dark:bg-nord-gray1 transition-colors duration-100 ease-out dark:text-nord-white3 flex items-center content-center justify-between gap-x-2 sticky top-0"
 		>
 			<button
 				class="rounded hover:bg-nord-white1 dark:hover:bg-nord-gray4 p-1 transition-colors duration-100 ease-out"
