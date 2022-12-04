@@ -65,7 +65,7 @@
 				type="text"
 				id="searchBox"
 				placeholder="Search station"
-				class="shadow group-hover:shadow-md focus:shadow-md outline-none pl-8 py-2 w-full rounded bg-nord-white1 dark:bg-nord-gray4 text-nord-gray4 dark:text-nord-white1 transition-shadow duration-200 ease-out"
+				class="pl-8 py-2 w-full rounded bg-nord-white2 dark:bg-nord-gray4 text-nord-gray4 dark:text-nord-white1 transition-shadow duration-200 ease-out"
 				v-model="searchText"
 				@keydown.enter="search"
 				maxlength="64"
@@ -73,7 +73,7 @@
 		</div>
 		<div
 			v-if="!loading"
-			class="my-4 py-2 bg-white dark:bg-nord-gray1 dark:text-nord-white3 flex items-center content-center justify-between gap-x-2 sticky top-0"
+			class="my-4 py-2 dark:text-nord-white3 flex items-center content-center justify-between gap-x-2 sticky top-0"
 		>
 			<button
 				class="rounded hover:bg-nord-white1 dark:hover:bg-nord-gray4 p-1 transition-colors duration-100 ease-out"

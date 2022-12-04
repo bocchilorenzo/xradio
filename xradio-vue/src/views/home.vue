@@ -2,7 +2,7 @@
   <div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Most recent stations
+        Recently added
       </h1>
       <div class="overflow-x-auto">
         <div class="grid grid-cols-10 gap-x-2 w-max pb-2">
@@ -17,7 +17,7 @@
     </div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Most popular stations
+        Popular
       </h1>
       <station-list
         v-for="station in $store.state.mostPopular"
@@ -28,7 +28,7 @@
     </div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Most rated stations
+        Most rated
       </h1>
       <station-list
         v-for="station in $store.state.mostRated"

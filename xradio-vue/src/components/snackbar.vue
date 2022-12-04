@@ -13,6 +13,7 @@
       mr-2
       p-2
       gap-x-2
+      text-black
       bg-nord-aurora1
     "
   >

@@ -43,23 +43,7 @@
         type="text"
         placeholder="Search station"
         id="searchBox"
-        class="
-          shadow
-          group-hover:shadow-md
-          focus:shadow-md
-          outline-none
-          pl-8
-          py-2
-          w-full
-          rounded
-          bg-nord-white1
-          dark:bg-nord-gray4
-          text-nord-gray4
-          dark:text-nord-white1
-          transition-shadow
-          duration-200
-          ease-out
-        "
+        class="pl-8 py-2 w-full rounded bg-nord-white2 dark:bg-nord-gray4 text-nord-gray4 dark:text-nord-white1 transition-shadow duration-200 ease-out"
         autofocus
         tabindex="0"
         v-model="searchText"

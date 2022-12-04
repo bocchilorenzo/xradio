@@ -2,7 +2,7 @@
   <div>
     <div class="mb-10">
       <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Favorite stations
+        Favorites
       </h1>
       <div v-if="Object.keys(favorites).length != 0">
         <div

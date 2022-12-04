@@ -13,7 +13,7 @@
 				<div class="flex w-full">
 					<div class="font-bold text-lg">Filter results</div>
 					<button
-						class="ml-auto rounded p-1 hover:bg-nord-white1 dark:hover:bg-nord-gray4 transition-colors duration-100 ease-out"
+						class="ml-auto rounded p-1 hover:bg-nord-white1 dark:hover:bg-nord-gray2 transition-colors duration-100 ease-out"
 						@click="toggleModal"
 					>
 						<svg
@@ -59,7 +59,7 @@
 						class="z-20 w-full max-h-72 overflow-y-scroll mx-3"
 					>
 						<button
-							class="rounded-md py-1 px-2 hover:bg-nord-white2 dark:hover:bg-nord-gray2 transition-colors duration-100 ease-out"
+							class="rounded-md py-1 px-2 hover:bg-nord-white1 dark:hover:bg-nord-gray2 transition-colors duration-100 ease-out"
                             @click="toggleCountries"
 						>
 							Toggle all
@@ -71,7 +71,7 @@
 						>
 							<li>
 								<div
-									class="flex items-center p-2 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray2"
+									class="flex items-center p-2 rounded hover:bg-nord-white1 dark:hover:bg-nord-gray2"
 								>
 									<input
 										:id="country.iso_3166_1"
@@ -108,7 +108,7 @@
 
 				<div class="ml-auto flex flex-col xs2:flex-row">
 					<button
-						class="ripple transition-colors duration-100 ease-out hover:bg-nord-white1 dark:hover:bg-nord-gray4 mt-2 xs2:mt-0 xs2:ml-2 py-2 px-4 rounded"
+						class="ripple transition-colors duration-100 ease-out hover:bg-nord-white1 dark:hover:bg-nord-gray2 mt-2 xs2:mt-0 xs2:ml-2 py-2 px-4 rounded"
 						@click="toggleModal"
 					>
 						Close

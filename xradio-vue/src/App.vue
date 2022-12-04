@@ -8,7 +8,7 @@
       dark:bg-nord-gray1
       bg-white
       transition-colors
-      duration-300
+      duration-100
       ease-out
       select-none
     "
@@ -327,27 +327,50 @@ export default {
 }
 */
 :root {
-  --scrollbarBG: #2b251d;
-  --thumbBG: #4c566a;
-  scrollbar-color: var(--thumbBG) var(--scrollbarBG) !important;
-  scrollbar-width: thin !important;
+  --scrollbarBGDark: #434c5e;
+  --thumbBGDark: #eceff4;
+  --scrollbarBGLight: #e5e9f0;
+  --thumbBGLight: #2e3440;
 }
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
-body {
-  scrollbar-width: thin !important;
-  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+*::-webkit-scrollbar-track {
+  background: var(--scrollbarBGLight);
+  border-radius: 10px;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: ease-out;
+  transition-duration: 100ms;
 }
-body::-webkit-scrollbar-track {
-  background: var(--scrollbarBG);
+.dark *::-webkit-scrollbar-track {
+  background: var(--scrollbarBGDark);
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: ease-out;
+  transition-duration: 100ms;
 }
-body::-webkit-scrollbar-thumb {
-  background-color: var(--thumbBG);
-  border: 1px solid var(--scrollbarBG);
+*::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBGLight);
+  /* border: 1px solid var(--scrollbarBGLight); */
+  border-radius: 10px;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: ease-out;
+  transition-duration: 100ms;
+}
+.dark *::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBGDark);
+  /* border: 1px solid var(--scrollbarBGDark); */
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: ease-out;
+  transition-duration: 100ms;
 }
 * {
   font-family: "Nanum Gothic", sans-serif;
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--thumbBGLight) var(--scrollbarBGLight);
+}
+.dark *{
+  scrollbar-color: var(--thumbBGDark) var(--scrollbarBGDark);
 }
 h1 {
   font-family: "Rubik", sans-serif;

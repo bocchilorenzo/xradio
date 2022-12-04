@@ -5,9 +5,8 @@
       w-12
       py-2
       h-full
-      bg-nord-white1
-      text-black
-      dark:text-nord-white3 dark:bg-nord-gray3
+      bg-nord-white2
+      dark:bg-nord-gray3
       z-20
     "
   >

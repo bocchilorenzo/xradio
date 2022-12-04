@@ -4,6 +4,7 @@
       sticky
       top-0
       w-max
+      text-black
       pl-14
       p-2
       bg-nord-aurora4
@@ -12,6 +13,7 @@
       items-center
       gap-x-2
       z-10
+      -mb-10
     "
   >
     <h1 class="text-large cursor-pointer inline" @click="$emit('update')">
