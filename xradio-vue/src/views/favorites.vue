@@ -1,9 +1,25 @@
 <template>
   <div>
     <div class="mb-10">
-      <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Favorites
-      </h1>
+      <header class="flex justify-between content-center items-center">
+        <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">Favorites</h1>
+        <!-- <button
+          @click="$emit('emptyFav')"
+          class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
+          title="Empty favorites"
+        >
+          <svg
+            class="h-6"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"
+            />
+          </svg>
+        </button> -->
+      </header>
       <div v-if="Object.keys(favorites).length != 0">
         <div
           class="flex content-center items-center gap-x-2"
@@ -13,17 +29,7 @@
           <station-list @click="play(station)" :station="station" />
           <button
             @click="$emit('removeFav', station.stationuuid)"
-            class="
-              h-full
-              p-2
-              mb-4
-              rounded
-              hover:bg-nord-white2
-              dark:hover:bg-nord-gray3
-              transition-colors
-              duration-100
-              ease-out
-            "
+            class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
           >
             <svg class="h-6" viewBox="0 0 24 24">
               <path

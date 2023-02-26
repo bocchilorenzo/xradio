@@ -2,7 +2,7 @@
   <div
     class="
       sticky
-      top-0
+      top-2
       w-max
       text-black
       pl-14

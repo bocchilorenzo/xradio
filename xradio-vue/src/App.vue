@@ -1,36 +1,12 @@
 <template>
   <main
-    class="
-      min-h-screen
-      relative
-      text-nord-gray1
-      dark:text-nord-white3
-      dark:bg-nord-gray1
-      bg-white
-      transition-colors
-      duration-100
-      ease-out
-      select-none
-    "
+    class="min-h-screen relative text-nord-gray1 dark:text-nord-white3 dark:bg-nord-gray1 bg-white transition-colors duration-100 ease-out select-none"
     @contextmenu.prevent="null"
   >
     <nav-bar-2 />
     <button
       @click="switchTheme"
-      class="
-        w-8
-        h-8
-        p-1
-        rounded-full
-        border-2
-        dark:border-nord-white3
-        border-nord-gray1
-        mx-2
-        mt-2
-        sticky
-        top-2
-        float-right
-      "
+      class="w-8 h-8 p-1 rounded-full border-2 dark:border-nord-white3 border-nord-gray1 mx-2 mt-2 sticky top-2 float-right"
     >
       <span class="sr-only">Switch theme</span>
       <svg class="fill-current" viewBox="0 0 24 24">
@@ -44,7 +20,7 @@
         />
       </svg>
     </button>
-    <transition name="slideLeft">
+    <transition name="slideRight">
       <snack-bar v-if="showSnack" :msg="snackMsg" />
     </transition>
     <transition name="slideLeft">
@@ -142,6 +118,7 @@ export default {
     };
     window.addEventListener("wheel", handleWheel, { passive: false });
 
+    //this.checkNode();
     let theme = localStorage.getItem("theme");
     if ((theme && theme == "dark") || !theme) {
       document.querySelector("html").classList.add("dark");
@@ -158,8 +135,11 @@ export default {
       this.$store.dispatch("volume", parseInt(localStorage.getItem("volume")));
     }
     if (localStorage.getItem("selectedCountries")) {
-      this.$store.dispatch("setSelectedCountries", JSON.parse(localStorage.getItem("selectedCountries")));
-		}
+      this.$store.dispatch(
+        "setSelectedCountries",
+        JSON.parse(localStorage.getItem("selectedCountries"))
+      );
+    }
     this.dns();
     Neutralino.events.on("baseHost", (event) => {
       this.baseUrl = event.detail;
@@ -169,6 +149,10 @@ export default {
     });
   },
   methods: {
+    async checkNode() {
+      let info = await Neutralino.os.execCommand("node -v");
+      console.log(`Node version: ${info.stdOut}`);
+    },
     async link(url) {
       await Neutralino.os.open(url);
     },
@@ -339,13 +323,15 @@ export default {
 *::-webkit-scrollbar-track {
   background: var(--scrollbarBGLight);
   border-radius: 10px;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
   transition-timing-function: ease-out;
   transition-duration: 100ms;
 }
 .dark *::-webkit-scrollbar-track {
   background: var(--scrollbarBGDark);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
   transition-timing-function: ease-out;
   transition-duration: 100ms;
 }
@@ -353,14 +339,16 @@ export default {
   background-color: var(--thumbBGLight);
   /* border: 1px solid var(--scrollbarBGLight); */
   border-radius: 10px;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
   transition-timing-function: ease-out;
   transition-duration: 100ms;
 }
 .dark *::-webkit-scrollbar-thumb {
   background-color: var(--thumbBGDark);
   /* border: 1px solid var(--scrollbarBGDark); */
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
   transition-timing-function: ease-out;
   transition-duration: 100ms;
 }
@@ -369,7 +357,7 @@ export default {
   scrollbar-width: thin !important;
   scrollbar-color: var(--thumbBGLight) var(--scrollbarBGLight);
 }
-.dark *{
+.dark * {
   scrollbar-color: var(--thumbBGDark) var(--scrollbarBGDark);
 }
 h1 {
@@ -399,7 +387,6 @@ h1 {
   opacity: 0.5;
   transform: translateY(-100%);
 }
-
 .slideLeft-enter {
   opacity: 0.5;
   transform: translateX(-100%);
@@ -411,5 +398,17 @@ h1 {
 .slideLeft-leave-to {
   opacity: 0.5;
   transform: translateX(-100%);
+}
+.slideRight-enter {
+  opacity: 0.5;
+  transform: translateX(-100%);
+}
+.slideRight-enter-active,
+.slideRight-leave-active {
+  transition: 0.2s ease-out;
+}
+.slideRight-leave-to {
+  opacity: 0.5;
+  transform: translateX(100%);
 }
 </style>

@@ -203,7 +203,7 @@
         </button>
         <transition name="fade">
           <div
-            class="absolute mt-16 pt-1 mb-48 pl-10 -rotate-90 transform-gpu"
+            class="absolute mt-16 py-2 pr-6 mb-48 pl-14 -rotate-90"
             v-if="showVol"
           >
             <input

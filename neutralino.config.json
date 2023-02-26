@@ -1,6 +1,6 @@
 {
   "applicationId": "js.neutralino.xradio",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "defaultMode": "window",
   "documentRoot": "/xradio-vue/dist/",
   "port": 6498,
@@ -10,9 +10,9 @@
   "extensions": [
     {
       "id": "js.neutralino.dnslookup",
-      "commandLinux": "node ${NL_PATH}/extensions/dnslookup/main.js --linux",
-      "commandDarwin": "node ${NL_PATH}/extensions/dnslookup/main.js --darwin",
-      "commandWindows": "node ${NL_PATH}/extensions/dnslookup/main.js --windows"
+      "commandLinux": "${NL_PATH}/extensions/dnslookup/dnslookup-linux",
+      "commandDarwin": "${NL_PATH}/extensions/dnslookup/dnslookup-macos",
+      "commandWindows": "${NL_PATH}/extensions/dnslookup/dnslookup-win.exe"
     }
   ],
   "enableExtensions": true,
@@ -21,9 +21,11 @@
       "title": "XRadio",
       "width": 900,
       "height": 640,
-      "minWidth": 400,
-      "minHeight": 200,
-      "resizable": false,
+      "minWidth": 640,
+      "minHeight": 640,
+      "maxHeight": 800,
+      "maxWidth": 1200,
+      "resizable": true,
       "icon": "/resources/icons/icon.png",
       "borderless": false,
       "maximize": false,
