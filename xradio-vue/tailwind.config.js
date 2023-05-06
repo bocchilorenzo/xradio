@@ -12,6 +12,9 @@ module.exports = {
       screens: {
         '2xl': '1536px',
       },
+      maxWidth: {
+        "272": "272px",
+      },
       colors: {
       transparent: 'transparent',
       current: 'currentColor',

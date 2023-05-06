@@ -1,34 +1,12 @@
 <template>
   <div
     id="player"
-    class="
-      w-full
-      z-10
-      fixed
-      h-16
-      p-2
-      pl-14
-      bottom-0
-      bg-nord-frost4
-      flex
-      justify-center
-      content-center
-      items-center
-      text-nord-white3
-    "
+    class="w-full z-10 fixed h-16 p-2 pl-14 bottom-0 bg-nord-frost4 flex justify-center content-center items-center text-nord-white3"
   >
     <div
-      class="
-        w-3/4
-        mx-auto
-        flex flex-row
-        justify-center
-        content-center
-        items-center
-        gap-x-4
-      "
+      class="w-3/4 mx-auto flex flex-row justify-center content-center items-center gap-x-2"
     >
-      <div v-if="loading">
+      <div v-if="loading" class="p-1 w-8 h-8 -mt-1">
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -100,15 +78,26 @@
       <button
         v-else-if="!isPlaying || error"
         @click="error ? '' : $emit('play', currentStation)"
+        class="player-button h-8 w-8"
       >
-        <svg class="fill-current h-8 w-8" viewBox="0 0 24 24">
+        <svg
+          class="fill-current"
+          viewBox="0 0 24 24"
+          height="24px"
+          width="24px"
+        >
           <path
             d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M10,16.5L16,12L10,7.5V16.5Z"
           />
         </svg>
       </button>
-      <button v-else @click="$emit('stop')">
-        <svg class="fill-current h-8 w-8" viewBox="0 0 24 24">
+      <button v-else @click="$emit('stop')" class="player-button h-8 w-8">
+        <svg
+          class="fill-current"
+          viewBox="0 0 24 24"
+          height="24px"
+          width="24px"
+        >
           <path
             d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4M9,9V15H15V9"
           />
@@ -120,19 +109,23 @@
         :src="currentStation.favicon"
         alt="Logo"
       />
-      <svg
-        v-else
-        class="fill-current h-10 rounded dark:text-nord-white3"
-        viewBox="0 0 24 24"
+      <img
+        v-else="currentStation.favicon != ''"
+        class="h-10 w-10 rounded object-contain"
+        src="../assets/music.svg"
         alt="Logo"
+      />
+      <small
+        class="flex flex-col content-center items-center justify-center text-center"
       >
-        <path
-          d="M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z"
-        />
-      </svg>
+        <i> {{ currentStation.codec }}</i>
+        <i v-if="currentStation.bitrate != ''">
+          {{ currentStation.bitrate }}k
+        </i>
+      </small>
       <div class="flex flex-col w-full text-center content-center items-center">
-        <div class="flex items-center content-center justify-center">
-          <p class="marquee font-bold">
+        <div class="flex items-center content-center justify-center w-full max-w-272 md:max-w-none">
+          <p class="w-full marquee font-bold">
             <span>
               {{ currentStation.name }}
             </span>
@@ -140,21 +133,23 @@
         </div>
         <p class="truncate text-sm" id="tags">{{ currentStation.tags }}</p>
       </div>
-      <small
-        class="
-          flex flex-col
-          content-center
-          items-center
-          justify-center
-          text-center
-        "
+      <span
+        v-if="currentStation.homepage != ''"
+        class="text-center ml-auto player-button"
+        title="Homepage"
+        @click.stop="openLink(currentStation.homepage)"
       >
-        <i> {{ currentStation.codec }}</i>
-        <i v-if="currentStation.bitrate != ''">
-          {{ currentStation.bitrate }}k
-        </i>
-      </small>
-      <button @click="manageFavorites" title="Save to favorites" class="p-1">
+        <svg class="fill-current h-6 w-6" viewBox="0 0 24 24">
+          <path
+            d="M16.36,14C16.44,13.34 16.5,12.68 16.5,12C16.5,11.32 16.44,10.66 16.36,10H19.74C19.9,10.64 20,11.31 20,12C20,12.69 19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.34 9.5,12.68 9.5,12C9.5,11.32 9.56,10.65 9.66,10H14.34C14.43,10.65 14.5,11.32 14.5,12C14.5,12.68 14.43,13.34 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12C4,11.31 4.1,10.64 4.26,10H7.64C7.56,10.66 7.5,11.32 7.5,12C7.5,12.68 7.56,13.34 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
+          />
+        </svg>
+      </span>
+      <button
+        @click="manageFavorites"
+        title="Save to favorites"
+        class="player-button"
+      >
         <svg
           v-if="!isFav"
           class="fill-current text-red-500"
@@ -182,7 +177,7 @@
         @mouseleave="showVol = false"
       >
         <button
-          class="cursor-pointer p-1 z-10"
+          class="z-10 player-button"
           @click="volume == 0 ? (volume = 100) : (volume = 0)"
         >
           <svg
@@ -207,14 +202,7 @@
             v-if="showVol"
           >
             <input
-              class="
-                rounded-lg
-                overflow-hidden
-                appearance-none
-                h-3
-                w-32
-                bg-nord-white1
-              "
+              class="rounded-lg overflow-hidden appearance-none h-3 w-32 bg-nord-white1"
               type="range"
               min="0"
               max="100"
@@ -224,15 +212,18 @@
           </div>
         </transition>
       </div>
+      <button
+        @click="$emit('close')"
+        class="absolute right-0 top-0 player-button"
+      >
+        <svg class="h-6" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"
+          />
+        </svg>
+      </button>
     </div>
-    <button @click="$emit('close')" class="absolute right-0 top-0 h-6 p-1">
-      <svg class="h-6" viewBox="0 0 24 24">
-        <path
-          fill="currentColor"
-          d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"
-        />
-      </svg>
-    </button>
   </div>
 </template>
 
@@ -257,6 +248,7 @@ export default {
   },
   mounted() {
     this.checkFav();
+    console.log(this.currentStation);
   },
   updated() {
     this.checkFav();
@@ -272,6 +264,9 @@ export default {
       } else {
         this.isFav = false;
       }
+    },
+    async openLink(link) {
+      await window.Neutralino.os.open(link);
     },
   },
   watch: {
@@ -302,11 +297,9 @@ export default {
   will-change: transform;
   animation: marquee 15s linear infinite;
 }
-
 .marquee span:hover {
   animation-play-state: paused;
 }
-
 @keyframes marquee {
   0% {
     transform: translate(0, 0);
@@ -315,7 +308,6 @@ export default {
     transform: translate(-100%, 0);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .marquee span {
     animation-iteration-count: 1;
@@ -344,5 +336,9 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: grab;
   background: #bf616a;
   border-radius: 50%;
+}
+
+.player-button {
+  @apply rounded-full p-1 hover:bg-nord-frost3 transition-colors duration-100 ease-out cursor-pointer;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<p>App version: {{ config.version }}</p>
 		<p>Current instance: {{ $store.state.baseUrl }}</p>
 		<br />
 		<h1 class="text-xl dark:text-nord-white3 font-bold">About</h1>
@@ -88,6 +89,9 @@
 <script>
 export default {
 	name: "about",
+	props:{
+		config: Object
+	},
 	methods: {
 		async link(url) {
 			await window.Neutralino.os.open(url)
