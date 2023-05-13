@@ -17,6 +17,7 @@
       bg-nord-aurora1
       z-10
       text-large
+      font-bold
     "
   >
     <span>{{ msg }}</span>

@@ -19,6 +19,40 @@
             />
           </svg>
         </button> -->
+        <div>
+          <button
+            @click="$emit('exportFavorites')"
+            class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
+            title="Export"
+          >
+            <svg
+              class="h-6 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <title>Export</title>
+              <path
+                d="M23,12L19,8V11H10V13H19V16M1,18V6C1,4.89 1.9,4 3,4H15A2,2 0 0,1 17,6V9H15V6H3V18H15V15H17V18A2,2 0 0,1 15,20H3A2,2 0 0,1 1,18Z"
+              />
+            </svg>
+          </button>
+          <button
+            @click="$emit('importFavorites')"
+            class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
+            title="Import"
+          >
+            <svg
+              class="h-6 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <title>Import</title>
+              <path
+                d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"
+              />
+            </svg>
+          </button>
+        </div>
       </header>
       <div v-if="Object.keys(favorites).length != 0">
         <div

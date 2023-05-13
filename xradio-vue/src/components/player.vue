@@ -248,7 +248,6 @@ export default {
   },
   mounted() {
     this.checkFav();
-    console.log(this.currentStation);
   },
   updated() {
     this.checkFav();

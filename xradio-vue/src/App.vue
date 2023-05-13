@@ -57,6 +57,8 @@
       @play="play"
       @removeFav="manageFavorites"
       @link="link"
+      @exportFavorites="exportFavorites"
+      @importFavorites="importFavorites"
     />
   </main>
 </template>
@@ -147,8 +149,70 @@ export default {
       this.initRequests();
       this.checkUpdate();
     });
+    Neutralino.events.on("savedJson", (event) => {
+      if (event.detail == "Error") {
+        this.toggleSnack("Error saving favorites");
+      } else {
+        this.toggleSnack("Favorites saved");
+      }
+    });
+    Neutralino.events.on("loadedJson", (event) => {
+      if (event.detail == "Error") {
+        this.toggleSnack("Error loading favorites");
+      } else {
+        this.favorites = JSON.parse(event.detail);
+        localStorage.setItem("favorites", event.detail);
+        this.toggleSnack("Favorites loaded");
+      }
+    });
   },
   methods: {
+    async importFavorites() {
+      let entries = await Neutralino.os.showOpenDialog(
+        "Select favorites file",
+        {
+          defaultPath: "./",
+          filters: [
+            { name: "JSON file", extensions: ["json"] },
+            { name: "All files", extensions: ["*"] },
+          ],
+        },
+
+      );
+      if (entries.length > 0) {
+        let data = {
+          filePath: entries,
+        };
+        await Neutralino.extensions.dispatch(
+          "js.neutralino.dnslookup",
+          "readJson",
+          data
+        );
+      }
+    },
+    async exportFavorites() {
+      let entries = await Neutralino.os.showSaveDialog(
+        "Save favorites to",
+        {
+          defaultPath: "favorites.json",
+          filters: [
+            { name: "JSON file", extensions: ["json"] },
+            { name: "All files", extensions: ["*"] },
+          ],
+        }
+      );
+      if (entries.length > 0) {
+        let data = {
+          filePath: entries,
+          content: JSON.stringify(this.favorites),
+        };
+        await Neutralino.extensions.dispatch(
+          "js.neutralino.dnslookup",
+          "writeJson",
+          data
+        );
+      }
+    },
     async checkNode() {
       let info = await Neutralino.os.execCommand("node -v");
       console.log(`Node version: ${info.stdOut}`);

@@ -51,7 +51,7 @@
         maxlength="64"
       />
     </div>
-    <div class="grid grid-cols-4 gap-6 mt-6 mx-auto">
+    <div class="grid grid-cols-3 md:grid-cols-4 gap-6 mt-6 mx-auto">
       <div
         v-for="country in countriesShow"
         :key="country.id"
