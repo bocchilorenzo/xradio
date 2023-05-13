@@ -155,6 +155,7 @@ export default {
       } else {
         this.toggleSnack("Favorites saved");
       }
+      console.log(event)
     });
     Neutralino.events.on("loadedJson", (event) => {
       if (event.detail == "Error") {
@@ -191,7 +192,7 @@ export default {
       }
     },
     async exportFavorites() {
-      let entries = await Neutralino.os.showSaveDialog(
+      let entry = await Neutralino.os.showSaveDialog(
         "Save favorites to",
         {
           defaultPath: "favorites.json",
@@ -201,9 +202,9 @@ export default {
           ],
         }
       );
-      if (entries.length > 0) {
+      if (entry != "") {
         let data = {
-          filePath: entries,
+          filePath: entry,
           content: JSON.stringify(this.favorites),
         };
         await Neutralino.extensions.dispatch(

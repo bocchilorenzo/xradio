@@ -112,7 +112,7 @@ client.onmessage = async function (e) {
         break;
       case "writeJson":
         try {
-          fs.writeFileSync(path.resolve(data.filePath[0]), data.content);
+          fs.writeFileSync(path.resolve(data.filePath), data.content);
 
           client.send(
             JSON.stringify({
