@@ -1,35 +1,16 @@
 <template>
   <div
-    class="
-      px-2
-      py-2
-      rounded-md
-      grid grid-cols-7
-      sm:grid-cols-10
-      content-center
-      items-center
-      cursor-pointer
-      w-full
-      gap-x-2
-      mb-4
-      dark:bg-nord-gray2
-      hover:bg-nord-white2
-      dark:hover:bg-nord-gray3
-      transition-colors
-      duration-100
-      ease-out
-      shadow-md
-    "
+    class="px-2 py-2 rounded-md grid grid-cols-7 sm:grid-cols-10 content-center items-center cursor-pointer w-full gap-x-2 mb-4 dark:bg-nord-gray2 hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out shadow-md"
   >
     <img
-      v-if="station.favicon != ''"
+      v-if="props.station.favicon != ''"
       class="h-10 w-10 rounded object-contain dark:bg-white"
-      :src="station.favicon"
-      alt="Logo"
+      :src="props.station.favicon"
+      :alt="'Station logo for ' + props.station.name"
     />
     <svg
       v-else
-      alt="Logo"
+      alt="Default station logo"
       class="fill-current h-10 rounded dark:text-nord-white3"
       viewBox="0 0 24 24"
     >
@@ -38,65 +19,47 @@
       />
     </svg>
     <div
-      class="
-        dark:text-nord-white3
-        w-full
-        font-bold
-        truncate
-        col-span-4
-        sm:col-span-7
-      "
+      class="dark:text-nord-white3 w-full font-bold truncate col-span-4 sm:col-span-7"
     >
-      <h2 class="truncate" :title="station.name">
-        {{ station.name }}
+      <h2 class="truncate" :title="props.station.name">
+        {{ props.station.name }}
       </h2>
       <img
-        v-if="station.countrycode != ''"
+        v-if="props.station.countrycode != ''"
         class="w-6 inline mr-1"
-        :class="station.homepage != '' ? '' : 'col-span-2'"
+        :class="props.station.homepage != '' ? '' : 'col-span-2'"
         :src="
           'https://flagcdn.com/w20/' +
-          station.countrycode.toLowerCase() +
+          props.station.countrycode.toLowerCase() +
           '.png'
         "
         :srcset="
           'https://flagcdn.com/w40/' +
-          station.countrycode.toLowerCase() +
+          props.station.countrycode.toLowerCase() +
           '.png 2x'
         "
-        :alt="station.countrycode"
+        :alt="props.station.countrycode"
         :title="
-          station.state != ''
-            ? station.country + ' - ' + station.state
-            : station.country
+          props.station.state != ''
+            ? props.station.country + ' - ' + props.station.state
+            : props.station.country
         "
       />
       <span
         class="text-nord-frost4 dark:text-nord-frost3"
-        :title="station.tags"
+        :title="props.station.tags"
       >
-        {{ station.tags }}
+        {{ props.station.tags }}
       </span>
     </div>
     <span class="ml-auto">
-      {{ station.bitrate ? station.bitrate + "K" : "" }}
+      {{ props.station.bitrate ? props.station.bitrate + "K" : "" }}
     </span>
     <span
-      v-if="station.homepage != ''"
-      class="
-        text-center
-        ml-auto
-        rounded-md
-        p-1
-        hover:bg-nord-frost2
-        dark:hover:bg-nord-gray1
-        transition-colors
-        duration-100
-        ease-out
-        cursor-pointer
-      "
+      v-if="props.station.homepage != ''"
+      class="text-center ml-auto rounded-md p-1 hover:bg-nord-frost2 dark:hover:bg-nord-gray1 transition-colors duration-100 ease-out cursor-pointer"
       title="Homepage"
-      @click.stop="openLink(station.homepage)"
+      @click.stop="openLink(props.station.homepage)"
     >
       <svg class="fill-current h-6 w-6" viewBox="0 0 24 24">
         <path
@@ -107,17 +70,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    station: Object,
-  },
-  methods: {
-    async openLink(link) {
-      await window.Neutralino.os.open(link);
-    },
-  },
-};
+<script setup>
+const props = defineProps({
+  station: Object,
+});
+
+async function openLink(link) {
+  await window.Neutralino.os.open(link);
+}
 </script>
 
 <style scoped>

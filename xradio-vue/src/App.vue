@@ -11,7 +11,7 @@
       <span class="sr-only">Switch theme</span>
       <svg class="fill-current" viewBox="0 0 24 24">
         <path
-          v-if="$store.state.theme == 'dark'"
+          v-if="store.state.theme == 'dark'"
           d="M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,6.65C6.9,7.16 6.36,7.78 5.94,8.5C5.5,9.24 5.25,10 5.11,10.79L3.34,7M3.36,17L5.12,13.23C5.26,14 5.53,14.78 5.95,15.5C6.37,16.24 6.91,16.86 7.5,17.37L3.36,17M20.65,7L18.88,10.79C18.74,10 18.47,9.23 18.05,8.5C17.63,7.78 17.1,7.15 16.5,6.64L20.65,7M20.64,17L16.5,17.36C17.09,16.85 17.62,16.22 18.04,15.5C18.46,14.77 18.73,14 18.87,13.21L20.64,17M12,22L9.59,18.56C10.33,18.83 11.14,19 12,19C12.82,19 13.63,18.83 14.37,18.56L12,22Z"
         />
         <path
@@ -63,309 +63,305 @@
   </main>
 </template>
 
-<script>
-import axios from "axios";
+<script setup>
 //import Navbar from "./components/NavBar.vue";
 import { Howl, Howler } from "howler/dist/howler.core.min";
 import Player from "./components/Player.vue";
 import SnackBar from "./components/SnackBar.vue";
 import NavBar2 from "./components/NavBar2.vue";
 import UpdateBanner from "./components/UpdateBanner.vue";
-export default {
-  components: {
-    //Navbar,
-    Player,
-    SnackBar,
-    NavBar2,
-    UpdateBanner,
-  },
-  data() {
-    return {
-      //baseUrl: "https://de1.api.radio-browser.info",
-      baseUrl: "",
-      sound: undefined,
-      loading: false,
-      isPlaying: false,
-      error: false,
-      currentStation: {},
-      favorites: {},
-      snackMsg: "",
-      bannerMsg: "",
-      showSnack: false,
-      showBanner: false,
-      config: {},
-    };
-  },
-  created() {
-    //prevent zooming
-    window.addEventListener(
-      "keydown",
-      function (e) {
-        if (
-          (e.ctrlKey || e.metaKey) &&
-          (e.which === 61 ||
-            e.which === 107 ||
-            e.which === 173 ||
-            e.which === 109 ||
-            e.which === 187 ||
-            e.which === 189)
-        ) {
-          e.preventDefault();
-        }
-      },
-      false
-    );
-    const handleWheel = function (e) {
-      if (e.ctrlKey || e.metaKey) e.preventDefault();
-    };
-    window.addEventListener("wheel", handleWheel, { passive: false });
+import { ref } from "vue";
+import { useStore } from "vuex";
 
-    //this.checkNode();
-    let theme = localStorage.getItem("theme");
-    if ((theme && theme == "dark") || !theme) {
-      document.querySelector("html").classList.add("dark");
-    } else {
-      this.$store.dispatch("setTheme", "light");
-    }
-    if (localStorage.getItem("favorites")) {
-      this.favorites = JSON.parse(localStorage.getItem("favorites"));
-    }
-    if (localStorage.getItem("currentStation")) {
-      this.currentStation = JSON.parse(localStorage.getItem("currentStation"));
-    }
-    if (localStorage.getItem("volume")) {
-      this.$store.dispatch("volume", parseInt(localStorage.getItem("volume")));
-    }
-    if (localStorage.getItem("selectedCountries")) {
-      this.$store.dispatch(
-        "setSelectedCountries",
-        JSON.parse(localStorage.getItem("selectedCountries"))
-      );
-    }
-    this.dns();
-    Neutralino.events.on("baseHost", (event) => {
-      this.baseUrl = event.detail;
-      this.$store.dispatch("setBase", this.baseUrl);
-      this.initRequests();
-      this.checkUpdate();
-    });
-    Neutralino.events.on("savedJson", (event) => {
-      if (event.detail == "Error") {
-        this.toggleSnack("Error saving favorites");
-      } else {
-        this.toggleSnack("Favorites saved");
-      }
-      console.log(event)
-    });
-    Neutralino.events.on("loadedJson", (event) => {
-      if (event.detail == "Error") {
-        this.toggleSnack("Error loading favorites");
-      } else {
-        this.favorites = JSON.parse(event.detail);
-        localStorage.setItem("favorites", event.detail);
-        this.toggleSnack("Favorites loaded");
-      }
-    });
-  },
-  methods: {
-    async importFavorites() {
-      let entries = await Neutralino.os.showOpenDialog(
-        "Select favorites file",
-        {
-          defaultPath: "./",
-          filters: [
-            { name: "JSON file", extensions: ["json"] },
-            { name: "All files", extensions: ["*"] },
-          ],
-        },
+let baseUrl = ref("");
+//let baseUrl = ref("https://de1.api.radio-browser.info");
+let sound = ref(undefined);
+let loading = ref(false);
+let isPlaying = ref(false);
+let error = ref(false);
+let currentStation = ref({});
+let favorites = ref({});
+let snackMsg = ref("");
+let bannerMsg = ref("");
+let showSnack = ref(false);
+let showBanner = ref(false);
+let config = ref({});
+const store = useStore();
 
-      );
-      if (entries.length > 0) {
-        let data = {
-          filePath: entries,
-        };
-        await Neutralino.extensions.dispatch(
-          "js.neutralino.dnslookup",
-          "readJson",
-          data
-        );
-      }
-    },
-    async exportFavorites() {
-      let entry = await Neutralino.os.showSaveDialog(
-        "Save favorites to",
-        {
-          defaultPath: "favorites.json",
-          filters: [
-            { name: "JSON file", extensions: ["json"] },
-            { name: "All files", extensions: ["*"] },
-          ],
-        }
-      );
-      if (entry != "") {
-        let data = {
-          filePath: entry,
-          content: JSON.stringify(this.favorites),
-        };
-        await Neutralino.extensions.dispatch(
-          "js.neutralino.dnslookup",
-          "writeJson",
-          data
-        );
-      }
-    },
-    async checkNode() {
-      let info = await Neutralino.os.execCommand("node -v");
-      console.log(`Node version: ${info.stdOut}`);
-    },
-    async link(url) {
-      await Neutralino.os.open(url);
-    },
-    async checkUpdate() {
-      axios
-        .get(
-          "https://api.github.com/repos/bocchilorenzo/xradio/releases/latest"
-        )
-        .then((res) => {
-          if (res.data.name != this.config.version) {
-            this.toggleBanner("Update available. Click to download");
-          }
-        })
-        .catch((err) => {
-          this.toggleSnack("Update check failed");
-          console.error(err);
-        });
-    },
-    toggleSnack(msg) {
-      this.snackMsg = msg;
-      this.showSnack = true;
-      setTimeout(() => {
-        this.showSnack = false;
-      }, 4000);
-    },
-    toggleBanner(msg) {
-      this.bannerMsg = msg;
-      this.showBanner = true;
-    },
-    volume() {
-      Howler.volume(this.$store.state.volume / 100);
-    },
-    manageFavorites(stationuuid) {
-      if (stationuuid in this.favorites) {
-        delete this.favorites[stationuuid];
-      } else {
-        this.favorites[stationuuid] = this.currentStation;
-      }
-      localStorage.setItem("favorites", JSON.stringify(this.favorites));
-      this.favorites = JSON.parse(localStorage.getItem("favorites"));
-    },
-    switchTheme() {
-      if (this.$store.state.theme == "dark") {
-        document.querySelector("html").classList.remove("dark");
-        this.$store.dispatch("setTheme", "light");
-        localStorage.setItem("theme", "light");
-      } else {
-        document.querySelector("html").classList.add("dark");
-        this.$store.dispatch("setTheme", "dark");
-        localStorage.setItem("theme", "dark");
-      }
-    },
-    play(station) {
-      this.loading = true;
-      this.isPlaying = true;
-      this.error = false;
-      this.currentStation = station;
-      axios({
-        mode: "get",
-        url: this.baseUrl + this.$store.state.urls.click + station.stationuuid,
-        headers: { "User-Agent": "XRadio/" + this.config.version },
-      })
-        /* .then((res) => {
-          console.log(res.data);
-        }) */
-        .catch((err) => {
-          console.error(err);
-        });
-      if (this.sound != undefined) {
-        this.sound.stop();
-      }
-      this.sound = new Howl({
-        src: [station.url_resolved],
-        html5: true,
-        volume: this.$store.state.volume / 100,
-      });
-      document.title = station.name;
-      this.sound.play();
-      this.sound.once("load", () => {
-        this.loading = false;
-      });
-      this.sound.once("loaderror", () => {
-        this.toggleSnack("Error: can't play station");
-        this.loading = false;
-        this.error = true;
-      });
-      localStorage.setItem(
-        "currentStation",
-        JSON.stringify(this.currentStation)
-      );
-    },
-    stop() {
-      this.sound.stop();
-      this.sound.unload();
-      document.title = "xradio";
-      this.isPlaying = false;
-      this.loading = false;
-      this.error = false;
-    },
-    closePlayer() {
-      if (this.sound != undefined) {
-        this.sound.stop();
-        this.sound.unload();
-      }
-      this.isPlaying = false;
-      this.loading = false;
-      this.error = false;
-      this.currentStation = {};
-      localStorage.setItem(
-        "currentStation",
-        JSON.stringify(this.currentStation)
-      );
-    },
-    async initRequests() {
-      this.config = await Neutralino.app.getConfig();
-      await axios({
-        mode: "get",
-        url: this.baseUrl + this.$store.state.urls.countries,
-        headers: { "User-Agent": "XRadio/" + this.config.version },
-      })
-        .then((res) => {
-          this.$store.dispatch("add", ["countries", res.data]);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      await axios({
-        mode: "get",
-        url: this.baseUrl + this.$store.state.urls.countryCodes,
-        headers: { "User-Agent": "XRadio/" + this.config.version },
-      })
-        .then((res) => {
-          this.$store.dispatch("add", ["countryCodes", res.data]);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-    async dns() {
-      let extension = "js.neutralino.dnslookup";
-      let event = "dnsLookup";
-      let data = {
-        getUrls: true,
-      };
-      await Neutralino.extensions.dispatch(extension, event, data);
-    },
+//prevent zooming
+window.addEventListener(
+  "keydown",
+  function (e) {
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      (e.which === 61 ||
+        e.which === 107 ||
+        e.which === 173 ||
+        e.which === 109 ||
+        e.which === 187 ||
+        e.which === 189)
+    ) {
+      e.preventDefault();
+    }
   },
+  false
+);
+
+const handleWheel = function (e) {
+  if (e.ctrlKey || e.metaKey) e.preventDefault();
 };
+window.addEventListener("wheel", handleWheel, { passive: false });
+
+//checkNode();
+let theme = localStorage.getItem("theme");
+if ((theme && theme == "dark") || !theme) {
+  document.querySelector("html").classList.add("dark");
+} else {
+  store.dispatch("setTheme", "light");
+}
+if (localStorage.getItem("favorites")) {
+  favorites.value = JSON.parse(localStorage.getItem("favorites"));
+}
+if (localStorage.getItem("currentStation")) {
+  currentStation.value = JSON.parse(localStorage.getItem("currentStation"));
+}
+if (localStorage.getItem("volume")) {
+  store.dispatch("volume", parseInt(localStorage.getItem("volume")));
+}
+if (localStorage.getItem("selectedCountries")) {
+  store.dispatch(
+    "setSelectedCountries",
+    JSON.parse(localStorage.getItem("selectedCountries"))
+  );
+}
+
+async function importFavorites() {
+  let entries = await Neutralino.os.showOpenDialog("Select favorites file", {
+    defaultPath: "./",
+    filters: [
+      { name: "JSON file", extensions: ["json"] },
+      { name: "All files", extensions: ["*"] },
+    ],
+  });
+  if (entries.length > 0) {
+    let data = {
+      filePath: entries,
+    };
+    await Neutralino.extensions.dispatch(
+      "js.neutralino.dnslookup",
+      "readJson",
+      data
+    );
+  }
+}
+
+async function exportFavorites() {
+  let entry = await Neutralino.os.showSaveDialog("Save favorites to", {
+    defaultPath: "favorites.json",
+    filters: [
+      { name: "JSON file", extensions: ["json"] },
+      { name: "All files", extensions: ["*"] },
+    ],
+  });
+  if (entry != "") {
+    let data = {
+      filePath: entry,
+      content: JSON.stringify(favorites.value),
+    };
+    await Neutralino.extensions.dispatch(
+      "js.neutralino.dnslookup",
+      "writeJson",
+      data
+    );
+  }
+}
+
+/* async function checkNode() {
+  let info = await Neutralino.os.execCommand("node -v");
+  console.log(`Node version: ${info.stdOut}`);
+} */
+
+async function link(url) {
+  await Neutralino.os.open(url);
+}
+
+async function checkUpdate() {
+  await fetch(
+    "https://api.github.com/repos/bocchilorenzo/xradio/releases/latest"
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      if (res.name != config.value.version) {
+        toggleBanner("Update available. Click to download");
+      }
+    })
+    .catch((err) => {
+      toggleSnack("Update check failed");
+      console.error(err);
+    });
+}
+
+function toggleSnack(msg) {
+  snackMsg.value = msg;
+  showSnack.value = true;
+  setTimeout(() => {
+    showSnack.value = false;
+  }, 4000);
+}
+
+function toggleBanner(msg) {
+  bannerMsg.value = msg;
+  showBanner.value = true;
+}
+
+function volume() {
+  Howler.volume(store.state.volume / 100);
+}
+
+function manageFavorites(stationuuid) {
+  if (stationuuid in favorites.value) {
+    delete favorites.value[stationuuid];
+  } else {
+    favorites.value[stationuuid] = currentStation.value;
+  }
+  localStorage.setItem("favorites", JSON.stringify(favorites.value));
+  favorites.value = JSON.parse(localStorage.getItem("favorites"));
+}
+
+function switchTheme() {
+  if (store.state.theme == "dark") {
+    document.querySelector("html").classList.remove("dark");
+    store.dispatch("setTheme", "light");
+    localStorage.setItem("theme", "light");
+  } else {
+    document.querySelector("html").classList.add("dark");
+    store.dispatch("setTheme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
+}
+
+function play(station) {
+  loading.value = true;
+  isPlaying.value = true;
+  error.value = false;
+  currentStation.value = station;
+  fetch(baseUrl.value + store.state.urls.click + station.stationuuid, {
+    method: "get",
+    headers: { "User-Agent": "XRadio/" + config.value.version },
+  })
+    /* .then((res) => {
+          console.log(res);
+        }) */
+    .catch((err) => {
+      console.error(err);
+    });
+  if (sound.value != undefined) {
+    sound.value.stop();
+  }
+  sound.value = new Howl({
+    src: [station.url_resolved],
+    html5: true,
+    volume: store.state.volume / 100,
+  });
+  document.title = station.name;
+  sound.value.play();
+  sound.value.once("load", () => {
+    loading.value = false;
+  });
+  sound.value.once("loaderror", () => {
+    toggleSnack("Error: can't play station");
+    loading.value = false;
+    error.value = true;
+  });
+  localStorage.setItem("currentStation", JSON.stringify(currentStation.value));
+}
+
+function stop() {
+  sound.value.stop();
+  sound.value.unload();
+  document.title = "xradio";
+  isPlaying.value = false;
+  loading.value = false;
+  error.value = false;
+}
+
+function closePlayer() {
+  if (sound.value != undefined) {
+    sound.value.stop();
+    sound.value.unload();
+  }
+  isPlaying.value = false;
+  loading.value = false;
+  error.value = false;
+  currentStation.value = {};
+  localStorage.setItem("currentStation", JSON.stringify(currentStation.value));
+}
+
+async function initRequests() {
+  config.value = await Neutralino.app.getConfig();
+  await fetch(baseUrl.value + store.state.urls.countries, {
+    method: "get",
+    headers: { "User-Agent": "XRadio/" + config.value.version },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      store.dispatch("add", ["countries", res]);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  await fetch(baseUrl.value + store.state.urls.countryCodes, {
+    method: "get",
+    headers: { "User-Agent": "XRadio/" + config.value.version },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      store.dispatch("add", ["countryCodes", res]);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+async function dns() {
+  let extension = "js.neutralino.dnslookup";
+  let event = "dnsLookup";
+  let data = {
+    getUrls: true,
+  };
+  await Neutralino.extensions.dispatch(extension, event, data);
+}
+
+dns();
+
+Neutralino.events.on("baseHost", (event) => {
+  baseUrl.value = event.detail;
+  store.dispatch("setBase", baseUrl.value);
+  initRequests();
+  checkUpdate();
+});
+Neutralino.events.on("savedJson", (event) => {
+  if (event.detail == "Error") {
+    toggleSnack("Error saving favorites");
+  } else {
+    toggleSnack("Favorites saved");
+  }
+});
+Neutralino.events.on("loadedJson", (event) => {
+  if (event.detail == "Error") {
+    toggleSnack("Error loading favorites");
+  } else {
+    favorites.value = JSON.parse(event.detail);
+    localStorage.setItem("favorites", event.detail);
+    toggleSnack("Favorites loaded");
+  }
+});
 </script>
 
 <style>

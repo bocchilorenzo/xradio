@@ -1,30 +1,9 @@
 <template>
-  <nav
-    class="
-      fixed
-      w-12
-      py-2
-      h-full
-      bg-nord-white2
-      dark:bg-nord-gray3
-      z-20
-    "
-  >
+  <nav class="fixed w-12 py-2 h-full bg-nord-white2 dark:bg-nord-gray3 z-20">
     <div class="z-20 absolute w-full">
       <button
         @click="handle('home')"
-        class="
-          w-full
-          h-8
-          py-1
-          px-3
-          mt-2
-          hover:bg-white
-          dark:hover:bg-nord-gray1
-          transition-colors
-          duration-100
-          ease-out
-        "
+        class="w-full h-8 py-1 px-3 mt-2 hover:bg-white dark:hover:bg-nord-gray1 transition-colors duration-100 ease-out"
       >
         <span class="sr-only">Home</span>
         <svg class="fill-current" viewBox="0 0 24 24">
@@ -35,18 +14,7 @@
       </button>
       <button
         @click="handle('favorites')"
-        class="
-          w-full
-          h-8
-          py-1
-          px-3
-          mt-2
-          hover:bg-white
-          dark:hover:bg-nord-gray1
-          transition-colors
-          duration-100
-          ease-out
-        "
+        class="w-full h-8 py-1 px-3 mt-2 hover:bg-white dark:hover:bg-nord-gray1 transition-colors duration-100 ease-out"
       >
         <span class="sr-only">Favorites</span>
         <svg class="fill-current" viewBox="0 0 24 24">
@@ -57,18 +25,7 @@
       </button>
       <button
         @click="handle('searchHub')"
-        class="
-          w-full
-          h-8
-          py-1
-          px-3
-          mt-2
-          hover:bg-white
-          dark:hover:bg-nord-gray1
-          transition-colors
-          duration-100
-          ease-out
-        "
+        class="w-full h-8 py-1 px-3 mt-2 hover:bg-white dark:hover:bg-nord-gray1 transition-colors duration-100 ease-out"
       >
         <span class="sr-only">Search</span>
         <svg class="fill-current" viewBox="0 0 24 24">
@@ -79,18 +36,7 @@
       </button>
       <button
         @click="handle('about')"
-        class="
-          w-full
-          h-8
-          py-1
-          px-3
-          mt-2
-          hover:bg-white
-          dark:hover:bg-nord-gray1
-          transition-colors
-          duration-100
-          ease-out
-        "
+        class="w-full h-8 py-1 px-3 mt-2 hover:bg-white dark:hover:bg-nord-gray1 transition-colors duration-100 ease-out"
       >
         <span class="sr-only">About</span>
         <svg class="fill-current" viewBox="0 0 24 24">
@@ -103,14 +49,15 @@
   </nav>
 </template>
 
-<script>
-export default {
-  methods: {
-    handle(path) {
-      if (this.$route.name != path) {
-        this.$router.push({ name: path });
-      }
-    },
-  },
-};
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
+
+function handle(path) {
+  if (route.name != path) {
+    router.push({ name: path });
+  }
+}
 </script>

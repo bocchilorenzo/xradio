@@ -21,7 +21,7 @@
         </button> -->
         <div>
           <button
-            @click="$emit('exportFavorites')"
+            @click="emit('exportFavorites')"
             class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
             title="Export"
           >
@@ -37,7 +37,7 @@
             </svg>
           </button>
           <button
-            @click="$emit('importFavorites')"
+            @click="emit('importFavorites')"
             class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
             title="Import"
           >
@@ -54,15 +54,15 @@
           </button>
         </div>
       </header>
-      <div v-if="Object.keys(favorites).length != 0">
+      <div v-if="Object.keys(props.favorites).length != 0">
         <div
           class="flex content-center items-center gap-x-2"
-          v-for="station in favorites"
+          v-for="station in props.favorites"
           :key="station.stationuuid"
         >
           <station-list @click="play(station)" :station="station" />
           <button
-            @click="$emit('removeFav', station.stationuuid)"
+            @click="emit('removeFav', station.stationuuid)"
             class="h-full p-2 mb-4 rounded hover:bg-nord-white2 dark:hover:bg-nord-gray3 transition-colors duration-100 ease-out"
           >
             <svg class="h-6" viewBox="0 0 24 24">
@@ -83,22 +83,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import StationList from "../components/StationList.vue";
-export default {
-  components: { StationList },
-  name: "favorites",
-  props: {
-    baseUrl: String,
-    favorites: Object,
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    play(station) {
-      this.$emit("play", station);
-    },
-  },
+
+const props = defineProps({
+  baseUrl: String,
+  favorites: Object,
+});
+
+const emit = defineEmits(["removeFav", "emptyFav", "exportFavorites", "importFavorites", "play"]);
+
+const play = (station) => {
+  emit("play", station);
 };
 </script>

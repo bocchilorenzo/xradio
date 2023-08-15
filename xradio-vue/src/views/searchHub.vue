@@ -2,15 +2,7 @@
   <div>
     <div class="relative w-full group">
       <svg
-        class="
-          ml-1
-          w-6
-          h-10
-          fill-current
-          absolute
-          text-nord-gray4
-          dark:text-nord-white1
-        "
+        class="ml-1 w-6 h-10 fill-current absolute text-nord-gray4 dark:text-nord-white1"
         viewBox="0 0 24 24"
       >
         <path
@@ -23,14 +15,7 @@
         @click="searchText.length > 0 ? (searchText = '') : null"
       >
         <svg
-          class="
-            mr-1
-            w-6
-            h-10
-            fill-current
-            text-nord-gray4
-            dark:text-nord-white1
-          "
+          class="mr-1 w-6 h-10 fill-current text-nord-gray4 dark:text-nord-white1"
           viewBox="0 0 24 24"
         >
           <path
@@ -44,30 +29,18 @@
         placeholder="Search station"
         id="searchBox"
         class="pl-8 py-2 w-full rounded bg-nord-white2 dark:bg-nord-gray4 text-nord-gray4 dark:text-nord-white1 transition-shadow duration-200 ease-out"
-        autofocus
         tabindex="0"
         v-model="searchText"
         @keydown.enter="search('text')"
-        maxlength="64"
+        maxlength="255"
+        autocomplete="off"
       />
     </div>
     <div class="grid grid-cols-3 md:grid-cols-4 gap-6 mt-6 mx-auto">
       <div
         v-for="country in countriesShow"
         :key="country.id"
-        class="
-          w-full
-          text-center
-          rounded-md
-          hover:shadow-md hover:bg-nord-white1
-          dark:hover:bg-nord-gray4
-          p-2
-          cursor-pointer
-          transition-[background-color,
-          box-shadow]
-          duration-100
-          ease-out
-        "
+        class="w-full text-center rounded-md hover:shadow-md hover:bg-nord-white1 dark:hover:bg-nord-gray4 p-2 cursor-pointer transition-[background-color, box-shadow] duration-100 ease-out"
         @click="search('country', country.code2l.toLowerCase())"
       >
         <img
@@ -80,8 +53,7 @@
             country.code2l.toLowerCase() +
             '.png 2x'
           "
-          :alt="country.name"
-          loading="lazy"
+          :alt="country.name + ' flag'"
         />
         <p class="truncate" :title="country.name">{{ country.name }}</p>
       </div>
@@ -89,93 +61,86 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import countriesArr from "../assets/countries.json";
-export default {
-  name: "searchHub",
-  props: {
-    baseUrl: String,
-  },
-  data() {
-    return {
-      searchText: "",
-      countries: countriesArr,
-      countriesShow: [],
-      startIndex: 0,
-      nextIndex: 32,
-      bottom: false,
-      stop: false,
-      last: false,
-    };
-  },
-  created() {
-    this.countriesShow = this.countries.slice(this.startIndex, this.nextIndex);
-    this.startIndex = this.nextIndex;
-    this.nextIndex += 32;
-  },
-  mounted() {
-    window.addEventListener("scroll", () => {
-      this.bottom = this.bottomVisible();
+import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import { useRouter } from 'vue-router';
+
+let searchText = ref("");
+let countries = reactive(countriesArr);
+let countriesShow = ref([]);
+let startIndex = ref(0);
+let nextIndex = ref(32);
+let bottom = ref(false);
+let stop = ref(false);
+let last = ref(false);
+const router = useRouter();
+
+countriesShow.value = countries.slice(startIndex.value, nextIndex.value);
+startIndex.value = nextIndex.value;
+nextIndex.value += 32;
+
+onMounted(() => {
+  window.addEventListener("scroll", () => {
+    bottom.value = bottomVisible();
+  });
+  document.getElementById("searchBox").focus();
+});
+
+function search(mode, q) {
+  if (mode == "text") {
+    router.push({
+      name: "search",
+      params: {
+        mode: mode,
+        q: searchText.value.replace(/[^a-z0-9áéíóúñü .,_-]/gim, "").trim(),
+      },
     });
-    document.getElementById("searchBox").focus();
-  },
-  methods: {
-    search(mode, q) {
-      if (mode == "text") {
-        this.$router.push({
-          name: "search",
-          params: {
-            mode: mode,
-            q: this.searchText
-              .replace(/[^a-z0-9áéíóúñü .,_-]/gim, "")
-              .trim(),
-          },
-        });
-      } else {
-        this.$router.push({
-          name: "search",
-          params: {
-            mode: mode,
-            q: q.replace(/[^a-z0-9áéíóúñü .,_-]/gim, "").trim(),
-          },
-        });
-      }
-    },
-    bottomVisible() {
-      const scrollY = window.scrollY;
-      const visible = document.documentElement.clientHeight;
-      const pageHeight = document.documentElement.scrollHeight - 200;
-      const bottomOfPage = visible + scrollY >= pageHeight;
-      return bottomOfPage || pageHeight < visible;
-    },
-    addCountries() {
-      this.countriesShow.push(
-        ...this.countries.slice(this.startIndex, this.nextIndex)
-      );
-      if (this.last) {
-        this.stop = true;
-      } else {
-        this.startIndex = this.nextIndex;
-        if (this.nextIndex + 32 >= this.countries.length) {
-          this.nextIndex = this.countries.length;
-          this.last = true;
-        } else {
-          this.nextIndex += 32;
-        }
-      }
-    },
-  },
-  beforeUnmount() {
-    window.removeEventListener("scroll", () => {
-      this.bottom = this.bottomVisible();
+  } else {
+    router.push({
+      name: "search",
+      params: {
+        mode: mode,
+        q: q.replace(/[^a-z0-9áéíóúñü .,_-]/gim, "").trim(),
+      },
     });
-  },
-  watch: {
-    bottom(bottom) {
-      if (bottom && !this.stop) {
-        this.addCountries();
-      }
-    },
-  },
-};
+  }
+}
+
+function bottomVisible() {
+  const scrollY = window.scrollY;
+  const visible = document.documentElement.clientHeight;
+  const pageHeight = document.documentElement.scrollHeight - 200;
+  const bottomOfPage = visible + scrollY >= pageHeight;
+  return bottomOfPage || pageHeight < visible;
+}
+
+function addCountries() {
+  countriesShow.value.push(
+    ...countries.slice(startIndex.value, nextIndex.value)
+  );
+  if (last.value) {
+    stop.value = true;
+  } else {
+    startIndex.value = nextIndex.value;
+    if (nextIndex.value + 32 >= countries.length) {
+      nextIndex.value = countries.length;
+      last.value = true;
+    } else {
+      nextIndex.value += 32;
+    }
+  }
+}
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", () => {
+    bottom.value = bottomVisible();
+  });
+});
+
+watch(bottom, (bottom) => {
+  if (bottom && !stop.value) {
+    addCountries();
+  }
+});
 </script>

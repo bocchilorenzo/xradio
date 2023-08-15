@@ -1,15 +1,6 @@
 <template>
   <nav
-    class="
-      fixed
-      w-12
-      p-2
-      z-20
-      h-full
-      bg-nord-white1
-      text-black
-      dark:text-nord-white3 dark:bg-nord-gray3
-    "
+    class="fixed w-12 p-2 z-20 h-full bg-nord-white1 text-black dark:text-nord-white3 dark:bg-nord-gray3"
   >
     <div>
       <button aria-label="Open Menu" @click="drawer">
@@ -56,21 +47,7 @@
       </div>
     </transition>
     <aside
-      class="
-        transform
-        top-0
-        left-0
-        w-64
-        bg-nord-white1
-        fixed
-        h-full
-        overflow-auto
-        ease-in-out
-        transition-transform
-        duration-300
-        z-30
-        dark:bg-nord-gray3
-      "
+      class="transform top-0 left-0 w-64 bg-nord-white1 fixed h-full overflow-auto ease-in-out transition-transform duration-300 z-30 dark:bg-nord-gray3"
       :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <!--
@@ -147,36 +124,31 @@
   </nav>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  methods: {
-    drawer() {
-      this.isOpen = !this.isOpen;
-    },
-    handle(path) {
-      if (this.$route.name != path) {
-        this.$router.push({ name: path });
-      }
-      this.drawer();
-    },
-  },
-  watch: {
-    isOpen: {
-      immediate: true,
-      handler(isOpen) {
-        if (process.client) {
-          if (isOpen) document.body.style.setProperty("overflow", "hidden");
-          else document.body.style.removeProperty("overflow");
-        }
-      },
-    },
-  },
-};
+<script setup>
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+let isOpen = ref(false);
+const route = useRoute();
+const router = useRouter();
+
+function drawer() {
+  isOpen.value = !isOpen.value;
+}
+
+function handle(path) {
+  if (route.name != path) {
+    router.push({ name: path });
+  }
+  drawer();
+}
+
+watch(isOpen, (isOpen) => {
+  if (process.client) {
+    if (isOpen) document.body.style.setProperty("overflow", "hidden");
+    else document.body.style.removeProperty("overflow");
+  }
+});
 </script>
 
 <style scoped>

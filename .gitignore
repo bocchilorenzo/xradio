@@ -2,6 +2,7 @@
 /bin
 /dist
 /.tmp
+/extensions/dnslookup/dnslookup-*
 
 #Vue builds
 /xradio-vue/dist
@@ -18,3 +19,4 @@ command.txt
 /extensions/dnslookup/node_modules
 /extensions/dnslookup/package-lock.json
 TODO.md
+node_modules

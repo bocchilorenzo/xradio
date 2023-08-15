@@ -6,7 +6,7 @@
     <div
       class="w-3/4 mx-auto flex flex-row justify-center content-center items-center gap-x-2"
     >
-      <div v-if="loading" class="p-1 w-8 h-8 -mt-1">
+      <div v-if="props.loading" class="p-1 w-8 h-8 -mt-1">
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -76,8 +76,8 @@
         </svg>
       </div>
       <button
-        v-else-if="!isPlaying || error"
-        @click="error ? '' : $emit('play', currentStation)"
+        v-else-if="!props.isPlaying || props.error"
+        @click="props.error ? '' : generalEmit('play')"
         class="player-button h-8 w-8"
       >
         <svg
@@ -91,7 +91,7 @@
           />
         </svg>
       </button>
-      <button v-else @click="$emit('stop')" class="player-button h-8 w-8">
+      <button v-else @click="generalEmit('stop')" class="player-button h-8 w-8">
         <svg
           class="fill-current"
           viewBox="0 0 24 24"
@@ -104,13 +104,13 @@
         </svg>
       </button>
       <img
-        v-if="currentStation.favicon != ''"
+        v-if="props.currentStation.favicon != ''"
         class="h-10 w-10 rounded object-contain"
-        :src="currentStation.favicon"
+        :src="props.currentStation.favicon"
         alt="Logo"
       />
       <img
-        v-else="currentStation.favicon != ''"
+        v-else="props.currentStation.favicon != ''"
         class="h-10 w-10 rounded object-contain"
         src="../assets/music.svg"
         alt="Logo"
@@ -118,26 +118,30 @@
       <small
         class="flex flex-col content-center items-center justify-center text-center"
       >
-        <i> {{ currentStation.codec }}</i>
-        <i v-if="currentStation.bitrate != ''">
-          {{ currentStation.bitrate }}k
+        <i> {{ props.currentStation.codec }}</i>
+        <i v-if="props.currentStation.bitrate != ''">
+          {{ props.currentStation.bitrate }}k
         </i>
       </small>
       <div class="flex flex-col w-full text-center content-center items-center">
-        <div class="flex items-center content-center justify-center w-full max-w-272 md:max-w-none">
+        <div
+          class="flex items-center content-center justify-center w-full max-w-272 md:max-w-none"
+        >
           <p class="w-full marquee font-bold">
             <span>
-              {{ currentStation.name }}
+              {{ props.currentStation.name }}
             </span>
           </p>
         </div>
-        <p class="truncate text-sm" id="tags">{{ currentStation.tags }}</p>
+        <p class="truncate text-sm" id="tags" :title="props.currentStation.tags">
+          {{ props.currentStation.tags }}
+        </p>
       </div>
       <span
-        v-if="currentStation.homepage != ''"
+        v-if="props.currentStation.homepage != ''"
         class="text-center ml-auto player-button"
         title="Homepage"
-        @click.stop="openLink(currentStation.homepage)"
+        @click.stop="openLink(props.currentStation.homepage)"
       >
         <svg class="fill-current h-6 w-6" viewBox="0 0 24 24">
           <path
@@ -213,7 +217,7 @@
         </transition>
       </div>
       <button
-        @click="$emit('close')"
+        @click="generalEmit('close')"
         class="absolute right-0 top-0 player-button"
       >
         <svg class="h-6" viewBox="0 0 24 24">
@@ -227,55 +231,72 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    isPlaying: Boolean,
-    loading: Boolean,
-    currentStation: Object,
-    error: Boolean,
-    favorites: Object,
-  },
-  data() {
-    return {
-      isFav: false,
-      showVol: false,
-      volume: 100,
-    };
-  },
-  beforeMount() {
-    this.volume = this.$store.state.volume;
-  },
-  mounted() {
-    this.checkFav();
-  },
-  updated() {
-    this.checkFav();
-  },
-  methods: {
-    manageFavorites() {
-      this.isFav = !this.isFav;
-      this.$emit("manageFavorites", this.currentStation.stationuuid);
-    },
-    checkFav() {
-      if (this.currentStation.stationuuid in this.favorites) {
-        this.isFav = true;
-      } else {
-        this.isFav = false;
-      }
-    },
-    async openLink(link) {
-      await window.Neutralino.os.open(link);
-    },
-  },
-  watch: {
-    volume(volume) {
-      this.$store.dispatch("volume", volume);
-      localStorage.setItem("volume", volume);
-      this.$emit("volume");
-    },
-  },
-};
+<script setup>
+import { ref, onBeforeMount, onMounted, onUpdated, watch } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const emit = defineEmits([
+  "play",
+  "stop",
+  "close",
+  "manageFavorites",
+  "volume",
+]);
+
+const props = defineProps({
+  isPlaying: Boolean,
+  loading: Boolean,
+  currentStation: Object,
+  error: Boolean,
+  favorites: Object,
+});
+let isFav = ref(false);
+let showVol = ref(false);
+let volume = ref(100);
+
+onBeforeMount(() => {
+  volume.value = store.state.volume;
+});
+
+onUpdated(() => {
+  checkFav();
+});
+
+onMounted(() => {
+  checkFav();
+});
+
+function generalEmit(emitType) {
+  if (emitType == "play") {
+    emit("play", props.currentStation);
+  } else {
+    emit(emitType);
+  }
+}
+
+function manageFavorites() {
+  isFav.value = !isFav.value;
+  emit("manageFavorites", props.currentStation.stationuuid);
+}
+
+function checkFav() {
+  if (props.currentStation.stationuuid in props.favorites) {
+    isFav.value = true;
+  } else {
+    isFav.value = false;
+  }
+}
+
+async function openLink(link) {
+  await window.Neutralino.os.open(link);
+}
+
+watch(volume, (volume) => {
+  store.dispatch("volume", volume);
+  localStorage.setItem("volume", volume);
+  emit("volume");
+});
 </script>
 
 <style scoped>

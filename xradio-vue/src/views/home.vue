@@ -7,7 +7,7 @@
       <div class="overflow-x-auto">
         <div class="grid grid-cols-10 gap-x-2 w-max pb-2">
           <station-card
-            v-for="station in $store.state.recentStations"
+            v-for="station in store.state.recentStations"
             :key="station.stationuuid"
             @click="play(station)"
             :station="station"
@@ -16,22 +16,18 @@
       </div>
     </div>
     <div class="mb-10">
-      <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Popular
-      </h1>
+      <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">Popular</h1>
       <station-list
-        v-for="station in $store.state.mostPopular"
+        v-for="station in store.state.mostPopular"
         :key="station.stationuuid"
         @click="play(station)"
         :station="station"
       />
     </div>
     <div class="mb-10">
-      <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">
-        Most rated
-      </h1>
+      <h1 class="text-xl mb-6 dark:text-nord-white3 font-bold">Most rated</h1>
       <station-list
-        v-for="station in $store.state.mostRated"
+        v-for="station in store.state.mostRated"
         :key="station.stationuuid"
         @click="play(station)"
         :station="station"
@@ -40,64 +36,69 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
-import stationCard from "../components/StationCard.vue";
+<script setup>
+import StationCard from "../components/StationCard.vue";
 import StationList from "../components/StationList.vue";
-export default {
-  components: { stationCard, StationList },
-  name: "home",
-  props: {
-    baseUrl: String,
-    config: Object,
-  },
-  created() {
-    if (!this.$store.state.initialLoad) {
-      this.initHome();
-      this.$store.dispatch("loaded");
-    }
-  },
-  methods: {
-    play(station) {
-      this.$emit("play", station);
-    },
-    async initHome() {
-      await axios({
-        mode: "get",
-        url: this.baseUrl + this.$store.state.urls.recentStations,
-        headers: { "User-Agent": "XRadio/" + this.config.version },
-      })
-        .then((res) => {
-          this.$store.dispatch("add", ["recentStations", res.data]);
-        })
-        .catch((err) => {
-          console.err(err);
-        });
+import { useStore } from "vuex";
 
-      await axios({
-        mode: "get",
-        url: this.baseUrl + this.$store.state.urls.mostPopular,
-        headers: { "User-Agent": "XRadio/" + this.config.version },
-      })
-        .then((res) => {
-          this.$store.dispatch("add", ["mostPopular", res.data]);
-        })
-        .catch((err) => {
-          console.err(err);
-        });
+const props = defineProps({
+  baseUrl: String,
+  config: Object,
+});
 
-      await axios({
-        mode: "get",
-        url: this.baseUrl + this.$store.state.urls.mostRated,
-        headers: { "User-Agent": "XRadio/" + this.config.version },
-      })
-        .then((res) => {
-          this.$store.dispatch("add", ["mostRated", res.data]);
-        })
-        .catch((err) => {
-          console.err(err);
-        });
-    },
-  },
-};
+const emit = defineEmits(["play"]);
+const store = useStore();
+
+function play(station) {
+  emit("play", station);
+}
+
+async function initHome() {
+  await fetch(props.baseUrl + store.state.urls.recentStations, {
+    method: "GET",
+    headers: { "User-Agent": "XRadio/" + props.config.version },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      store.dispatch("add", ["recentStations", res]);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  await fetch(props.baseUrl + store.state.urls.mostPopular, {
+    method: "GET",
+    headers: { "User-Agent": "XRadio/" + props.config.version },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      store.dispatch("add", ["mostPopular", res]);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  await fetch(props.baseUrl + store.state.urls.mostRated, {
+    method: "GET",
+    headers: { "User-Agent": "XRadio/" + props.config.version },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      store.dispatch("add", ["mostRated", res]);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+if (!store.state.initialLoad) {
+  initHome();
+  store.dispatch("loaded");
+}
 </script>

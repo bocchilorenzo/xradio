@@ -17,53 +17,53 @@
     "
   >
     <img
-      v-if="station.favicon != ''"
+      v-if="props.station.favicon != ''"
       class="h-16 rounded object-contain
       dark:bg-white"
-      :src="station.favicon"
-      alt="Logo"
+      :src="props.station.favicon"
+      :alt="'Station logo for ' + props.station.name"
     />
     <svg
       v-else
       class="fill-current h-16 rounded dark:text-nord-white3"
       viewBox="0 0 24 24"
-      alt="Logo"
+      alt="Default station logo"
     >
       <path
         d="M21,3V15.5A3.5,3.5 0 0,1 17.5,19A3.5,3.5 0 0,1 14,15.5A3.5,3.5 0 0,1 17.5,12C18.04,12 18.55,12.12 19,12.34V6.47L9,8.6V17.5A3.5,3.5 0 0,1 5.5,21A3.5,3.5 0 0,1 2,17.5A3.5,3.5 0 0,1 5.5,14C6.04,14 6.55,14.12 7,14.34V6L21,3Z"
       />
     </svg>
-    <h2 class="truncate w-full text-center font-bold" :title="station.name">
-      {{ station.name }}
+    <h2 class="truncate w-full text-center font-bold" :title="props.station.name">
+      {{ props.station.name }}
     </h2>
     <div>
-      <span v-if="station.countrycode != ''">
+      <span v-if="props.station.countrycode != ''">
         <img
           class="w-6 inline mr-1"
           :src="
             'https://flagcdn.com/w20/' +
-            station.countrycode.toLowerCase() +
+            props.station.countrycode.toLowerCase() +
             '.png'
           "
           :srcset="
             'https://flagcdn.com/w40/' +
-            station.countrycode.toLowerCase() +
+            props.station.countrycode.toLowerCase() +
             '.png 2x'
           "
-          :alt="station.countrycode"
+          :alt="props.station.countrycode"
           :title="
-            station.state != ''
-              ? station.country + ' - ' + station.state
-              : station.country
+            props.station.state != ''
+              ? props.station.country + ' - ' + props.station.state
+              : props.station.country
           "
         />
       </span>
       <span class="text-nord-frost4 dark:text-nord-white1">
-        {{ station.bitrate ? station.bitrate + "K" : "" }}
+        {{ props.station.bitrate ? props.station.bitrate + "K" : "" }}
       </span>
     </div>
     <span
-      v-if="station.homepage != ''"
+      v-if="props.station.homepage != ''"
       class="
         text-center
         rounded-md
@@ -76,7 +76,7 @@
         cursor-pointer
       "
       title="Homepage"
-      @click.stop="openLink(station.homepage)"
+      @click.stop="openLink(props.station.homepage)"
     >
       <svg class="fill-current h-6 w-6" viewBox="0 0 24 24">
         <path
@@ -87,17 +87,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    station: Object,
-  },
-  methods: {
-    async openLink(link) {
-      await window.Neutralino.os.open(link);
-    },
-  },
-};
+<script setup>
+const props = defineProps({
+  station: Object,
+});
+
+async function openLink(link) {
+  await window.Neutralino.os.open(link);
+}
 </script>
 
 <style scoped>

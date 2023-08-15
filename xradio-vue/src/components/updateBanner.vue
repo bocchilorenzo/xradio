@@ -1,20 +1,6 @@
 <template>
   <div
-    class="
-      sticky
-      top-2
-      w-max
-      text-black
-      pl-14
-      p-2
-      bg-nord-aurora4
-      flex
-      content-center
-      items-center
-      gap-x-2
-      z-10
-      -mb-10
-    "
+    class="sticky top-2 w-max text-black pl-14 p-2 bg-nord-aurora4 flex content-center items-center gap-x-2 z-10 -mb-10"
   >
     <h1 class="text-large cursor-pointer inline" @click="$emit('update')">
       Update available. Click to download
@@ -30,9 +16,4 @@
   </div>
 </template>
 
-<script>
-export default {};
-</script>
-
-<style>
-</style>
+<script setup></script>
