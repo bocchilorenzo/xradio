@@ -90,6 +90,7 @@
             d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M10,16.5L16,12L10,7.5V16.5Z"
           />
         </svg>
+        <span class="sr-only"> Play station </span>
       </button>
       <button v-else @click="generalEmit('stop')" class="player-button h-8 w-8">
         <svg
@@ -102,6 +103,7 @@
             d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4M9,9V15H15V9"
           />
         </svg>
+        <span class="sr-only"> Stop playback </span>
       </button>
       <img
         v-if="props.currentStation.favicon != ''"
@@ -133,14 +135,17 @@
             </span>
           </p>
         </div>
-        <p class="truncate text-sm" id="tags" :title="props.currentStation.tags">
+        <p
+          class="truncate text-sm"
+          id="tags"
+          :title="props.currentStation.tags"
+        >
           {{ props.currentStation.tags }}
         </p>
       </div>
-      <span
+      <button
         v-if="props.currentStation.homepage != ''"
         class="text-center ml-auto player-button"
-        title="Homepage"
         @click.stop="openLink(props.currentStation.homepage)"
       >
         <svg class="fill-current h-6 w-6" viewBox="0 0 24 24">
@@ -148,12 +153,9 @@
             d="M16.36,14C16.44,13.34 16.5,12.68 16.5,12C16.5,11.32 16.44,10.66 16.36,10H19.74C19.9,10.64 20,11.31 20,12C20,12.69 19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.34 9.5,12.68 9.5,12C9.5,11.32 9.56,10.65 9.66,10H14.34C14.43,10.65 14.5,11.32 14.5,12C14.5,12.68 14.43,13.34 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12C4,11.31 4.1,10.64 4.26,10H7.64C7.56,10.66 7.5,11.32 7.5,12C7.5,12.68 7.56,13.34 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
           />
         </svg>
-      </span>
-      <button
-        @click="manageFavorites"
-        title="Save to favorites"
-        class="player-button"
-      >
+        <span class="sr-only"> Open homepage </span>
+      </button>
+      <button @click="manageFavorites" class="player-button">
         <svg
           v-if="!isFav"
           class="fill-current text-red-500"
@@ -174,6 +176,7 @@
             d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
           />
         </svg>
+        <span class="sr-only"> Save to favorites </span>
       </button>
       <div
         class="flex content-center items-center justify-center relative h-auto"
@@ -199,6 +202,7 @@
             />
             <path v-else d="M7,9V15H11L16,20V4L11,9H7Z" />
           </svg>
+          <span class="sr-only"> Mute/Unmute </span>
         </button>
         <transition name="fade">
           <div
@@ -226,6 +230,7 @@
             d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"
           />
         </svg>
+        <span class="sr-only"> Close player </span>
       </button>
     </div>
   </div>

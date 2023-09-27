@@ -3,7 +3,7 @@
     class="min-h-screen relative text-nord-gray1 dark:text-nord-white3 dark:bg-nord-gray1 bg-white transition-colors duration-100 ease-out select-none"
     @contextmenu.prevent="null"
   >
-    <nav-bar-2 />
+    <nav-bar />
     <button
       @click="switchTheme"
       class="w-8 h-8 p-1 rounded-full border-2 dark:border-nord-white3 border-nord-gray1 mx-2 mt-2 sticky top-2 float-right"
@@ -64,11 +64,10 @@
 </template>
 
 <script setup>
-//import Navbar from "./components/NavBar.vue";
 import { Howl, Howler } from "howler/dist/howler.core.min";
 import Player from "./components/Player.vue";
 import SnackBar from "./components/SnackBar.vue";
-import NavBar2 from "./components/NavBar2.vue";
+import NavBar from "./components/NavBar.vue";
 import UpdateBanner from "./components/UpdateBanner.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
