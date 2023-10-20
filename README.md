@@ -23,7 +23,7 @@ await Neutralino.events.on(`windowClose`, () => {
 ## Building
 
 ### Requirements
-- NodeJS v14+. It's required for the extension to work (the dns lookup required by the radio API)
+- NodeJS v18+. It's required for the extension to work (the dns lookup required by the radio API)
 - Neutralino CLI
 
 ### Steps

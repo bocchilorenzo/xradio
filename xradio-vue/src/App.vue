@@ -263,6 +263,11 @@ function play(station) {
     src: [station.url_resolved],
     html5: true,
     volume: store.state.volume / 100,
+    xhr: {
+      headers: {
+        "User-Agent": "XRadio/" + config.value.version,
+      },
+    },
   });
   document.title = station.name;
   sound.value.play();
