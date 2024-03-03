@@ -81,9 +81,9 @@ client.onmessage = async function (e) {
         break;
       case "readJson":
         try {
-          const jsonData = JSON.stringify(JSON.parse(
-            fs.readFileSync(path.resolve(data.filePath[0]))
-          ));
+          const jsonData = JSON.stringify(
+            JSON.parse(fs.readFileSync(path.resolve(data.filePath[0])))
+          );
 
           client.send(
             JSON.stringify({

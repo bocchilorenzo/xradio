@@ -1,8 +1,5 @@
 <template>
-  <main
-    class="min-h-screen relative text-nord-gray1 dark:text-nord-white3 dark:bg-nord-gray1 bg-white transition-colors duration-100 ease-out select-none"
-    @contextmenu.prevent="null"
-  >
+  <main class="relative min-h-screen" @contextmenu.prevent="null">
     <nav-bar />
     <button
       @click="switchTheme"
@@ -60,6 +57,14 @@
       @exportFavorites="exportFavorites"
       @importFavorites="importFavorites"
     />
+    <svg
+      v-else
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      class="w-20 h-20 fill-current mx-auto top-[45%] animate-spin absolute left-1/2"
+    >
+      <path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z" />
+    </svg>
   </main>
 </template>
 
@@ -477,3 +482,4 @@ h1 {
   transform: translateX(100%);
 }
 </style>
+./components/Loader/SkeletonLoader.vue
